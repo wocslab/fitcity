@@ -20,11 +20,9 @@ export default function HeroSection({ isLoading = false }) {
   const heroRef = useRef(null);
 
   useEffect(() => {
-    // Only start the entrance animation once the loading screen is gone
     if (isLoading) return;
-
-    const timer = setTimeout(() => setLoaded(true), 150);
-    return () => clearTimeout(timer);
+    // No timeout — set immediately so text appears the instant loading screen is gone
+    setLoaded(true);
   }, [isLoading]);
 
   return (
@@ -64,16 +62,14 @@ export default function HeroSection({ isLoading = false }) {
       </div>
 
       {/* ================= CONTENT ================= */}
-      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-[900px] lg:min-h-screen flex items-end lg:items-start pt-80 lg:pt-[150px] pb-16">
+      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-[900px] lg:min-h-screen flex items-end lg:items-start pt-52 lg:pt-[150px] pb-16">
         <div className="max-w-2xl w-full">
           {/* ================= HEADING ================= */}
           <h1 className="uppercase leading-[0.9] font-black">
             {/* Line 1 */}
             <div
-              className={`text-white text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-700 ${
-                loaded
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
+              className={`text-white text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-500 ${
+                loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
               YOUR CITY.
@@ -81,10 +77,8 @@ export default function HeroSection({ isLoading = false }) {
 
             {/* Line 2 */}
             <div
-              className={`text-3xl sm:text-5xl lg:text-7xl italic font-black transition-all duration-700 delay-150 ${
-                loaded
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
+              className={`text-3xl sm:text-5xl lg:text-7xl italic font-black transition-all duration-500 delay-150 ${
+                loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
               <span className="text-white">YOUR </span>
@@ -93,10 +87,8 @@ export default function HeroSection({ isLoading = false }) {
 
             {/* Line 3 */}
             <div
-              className={`text-3xl sm:text-5xl lg:text-7xl italic font-black transition-all duration-700 delay-300 ${
-                loaded
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
+              className={`text-3xl sm:text-5xl lg:text-7xl italic font-black transition-all duration-500 delay-300 ${
+                loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
               <span className="text-white">YOUR </span>
@@ -106,10 +98,8 @@ export default function HeroSection({ isLoading = false }) {
 
           {/* ================= PARAGRAPH ================= */}
           <p
-            className={`mt-4 md:mt-6 text-gray-300 text-sm md:text-lg leading-relaxed max-w-xs md:max-w-lg transition-all duration-700 delay-500 ${
-              loaded
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
+            className={`mt-4 md:mt-6 text-gray-300 text-sm md:text-lg leading-relaxed max-w-xs md:max-w-lg transition-all duration-500 delay-500 ${
+              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
             Fit City is more than a gym. It's a community that empowers you to
@@ -118,10 +108,8 @@ export default function HeroSection({ isLoading = false }) {
 
           {/* ================= BUTTONS ================= */}
           <div
-            className={`flex flex-col sm:flex-row gap-3 mt-6 md:mt-8 transition-all duration-700 delay-700 ${
-              loaded
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
+            className={`flex flex-col sm:flex-row gap-3 mt-6 md:mt-8 transition-all duration-500 delay-700 ${
+              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
             <a
@@ -144,10 +132,8 @@ export default function HeroSection({ isLoading = false }) {
 
           {/* ================= FEATURES ================= */}
           <div
-            className={`grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4 mt-10 md:mt-14 transition-all duration-700 delay-1000 ${
-              loaded
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
+            className={`grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4 mt-10 md:mt-14 transition-all duration-500 delay-1000 ${
+              loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
             {features.map((item) => {

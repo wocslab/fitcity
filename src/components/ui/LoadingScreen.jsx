@@ -4,14 +4,12 @@ export default function LoadingScreen({ onComplete }) {
   const [phase, setPhase] = useState("enter"); // enter → hold → exit
 
   useEffect(() => {
-    // Hold for 1.8s then start exit
-    const holdTimer = setTimeout(() => setPhase("exit"), 1800);
-    // Unmount after exit animation (0.6s)
-    const doneTimer = setTimeout(() => onComplete?.(), 2400);
-    return () => {
-      clearTimeout(holdTimer);
-      clearTimeout(doneTimer);
-    };
+    // Hold for 1.8s → start exit fade AND notify parent simultaneously
+    const holdTimer = setTimeout(() => {
+      setPhase("exit");
+      onComplete?.();
+    }, 1800);
+    return () => clearTimeout(holdTimer);
   }, [onComplete]);
 
   return (
@@ -20,7 +18,13 @@ export default function LoadingScreen({ onComplete }) {
         phase === "exit" ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-     
+      {/* Animated red bars background — mirrors the hero section */}
+      {/* <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute right-4 top-24 w-4 h-52 bg-red-600 rounded-full opacity-20 animate-pulse" />
+        <div className="absolute right-14 top-40 w-4 h-64 bg-red-600 rounded-full opacity-15 animate-pulse delay-200" />
+        <div className="absolute right-24 top-10 w-4 h-40 bg-red-600 rounded-full opacity-20 animate-pulse delay-500" />
+        <div className="absolute left-6 bottom-32 w-3 h-36 bg-red-600 rounded-full opacity-10 animate-pulse delay-300" />
+      </div> */}
 
       {/* Logo block */}
       <div
