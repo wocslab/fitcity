@@ -35,19 +35,22 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <a href="#home" className="flex items-center gap-3 group">
+            <a href="#home" className="flex items-center group">
               {/* Logo Image */}
-              <img
-                src="/logo.png"
-                alt="Fit City Gym"
-                className="h-16 w-auto object-contain"
-              />
+             <img
+  src="/logo.png"
+  alt="Fit City Gym"
+  className="h-20 md:h-16 w-auto object-contain"
+/>
 
               {/* Title */}
               <div className="leading-none">
-                <h1 className="text-white font-extrabold text-xl lg:text-2xl tracking-wide uppercase">
-                  FIT  <span className=" text-xl lg:text-2xl tracking-wide uppercase text-red-600">CITY</span> 
-                </h1>
+             <h1 className="text-white font-semibold text-3xl tracking-wide uppercase">
+  FIT
+  <span className=" text-3xl text-red-600 font-black">
+    CITY
+  </span>
+</h1>
                   {/* <h1 className="text-white font-extrabold text-xl lg:text-2xl tracking-wide uppercase">
                   FIT  <span className=" font-extrabold text-xl lg:text-2xl tracking-wide uppercase text-red-600">CITY</span> GYM
                 </h1> */}

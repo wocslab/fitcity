@@ -15,20 +15,23 @@ const features = [
   { icon: RiShieldCheckLine, label: "Strong Community" },
 ];
 
-export default function HeroSection() {
+export default function HeroSection({ isLoading = false }) {
   const [loaded, setLoaded] = useState(false);
   const heroRef = useRef(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 100);
+    // Only start the entrance animation once the loading screen is gone
+    if (isLoading) return;
+
+    const timer = setTimeout(() => setLoaded(true), 150);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isLoading]);
 
   return (
     <section
       id="home"
       ref={heroRef}
-      className="relative min-h-screen overflow-hidden bg-black"
+      className="relative min-h-[900px] lg:min-h-screen overflow-hidden bg-black"
     >
       {/* ================= BACKGROUND ================= */}
       <div className="absolute inset-0 z-0">
@@ -55,15 +58,13 @@ export default function HeroSection() {
         {/* Right Red Bars */}
         <div className="absolute top-0 right-0 h-full w-[140px] md:w-[220px] opacity-40">
           <div className="absolute right-4 md:right-10 top-24 w-4 md:w-6 h-52 md:h-64 bg-red-600 rounded-full" />
-
           <div className="absolute right-14 md:right-24 top-40 w-4 md:w-6 h-64 md:h-72 bg-red-600 rounded-full" />
-
           <div className="absolute right-24 md:right-40 top-10 w-4 md:w-6 h-40 md:h-52 bg-red-600 rounded-full" />
         </div>
       </div>
 
       {/* ================= CONTENT ================= */}
-      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-screen flex items-end md:items-center pb-24 md:pb-0">
+      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-[900px] lg:min-h-screen flex items-end lg:items-start pt-80 lg:pt-[150px] pb-16">
         <div className="max-w-2xl w-full">
           {/* ================= HEADING ================= */}
           <h1 className="uppercase leading-[0.9] font-black">
@@ -111,7 +112,7 @@ export default function HeroSection() {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            Fit City is more than a gym. It’s a community that empowers you to
+            Fit City is more than a gym. It's a community that empowers you to
             be stronger, healthier and unstoppable.
           </p>
 
@@ -123,7 +124,6 @@ export default function HeroSection() {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            {/* Join Button */}
             <a
               href="#membership"
               className="w-full sm:w-auto flex items-center justify-center px-8 py-3 bg-red-600 hover:bg-red-700 text-white uppercase tracking-widest text-xs md:text-sm font-bold transition-all duration-300 hover:scale-105 shadow-lg shadow-red-600/30"
@@ -131,7 +131,6 @@ export default function HeroSection() {
               Join Fit City
             </a>
 
-            {/* Watch Button */}
             <a
               href="#video"
               className="w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3 border border-white/20 hover:border-red-600 text-white uppercase tracking-widest text-xs md:text-sm font-bold transition-all duration-300 hover:bg-white/5"
@@ -139,7 +138,6 @@ export default function HeroSection() {
               <span className="w-8 h-8 rounded-full border border-red-600 flex items-center justify-center text-red-600">
                 <Play size={12} fill="currentColor" />
               </span>
-
               Watch Video
             </a>
           </div>
@@ -154,16 +152,14 @@ export default function HeroSection() {
           >
             {features.map((item) => {
               const Icon = item.icon;
-
               return (
                 <div
                   key={item.label}
-                  className="flex flex-col items-center text-center group"
+                  className="flex flex-col items-start text-left sm:items-center sm:text-center group"
                 >
                   <div className="flex items-center justify-center text-red-600 text-3xl md:text-4xl transition-all duration-300 group-hover:scale-110">
                     <Icon />
                   </div>
-
                   <span className="mt-2 text-[10px] md:text-xs uppercase tracking-widest text-white font-semibold leading-relaxed">
                     {item.label}
                   </span>
@@ -174,13 +170,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ================= SLIDER DOTS ================= */}
-      <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-30">
-        <span className="w-2 h-2 rounded-full bg-red-600" />
-        <span className="w-2 h-2 rounded-full bg-white/30" />
-        <span className="w-2 h-2 rounded-full bg-white/30" />
-      </div>
-
       {/* ================= SCROLL ================= */}
       <a
         href="#programs"
@@ -189,7 +178,6 @@ export default function HeroSection() {
         <span className="text-[10px] uppercase tracking-[0.3em] rotate-90 mb-6">
           Scroll
         </span>
-
         <ChevronDown size={18} className="animate-bounce" />
       </a>
     </section>

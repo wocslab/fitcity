@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import HeroSection from './components/sections/HeroSection';
@@ -9,10 +9,15 @@ import AboutSection from './components/sections/AboutSection';
 import ContactSection from './components/sections/ContactSection';
 import MarqueeTicker from './components/ui/MarqueeTicker';
 import WhatsAppButton from './components/ui/WhatsAppButton';
+import LoadingScreen from './components/ui/LoadingScreen';
 
 function App() {
-  // Initialize scroll reveal observer
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Initialize scroll reveal observer (only after loading is done)
   useEffect(() => {
+    if (isLoading) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -28,10 +33,12 @@ function App() {
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [isLoading]);
 
   // Re-run reveal on route changes / dynamic content
   useEffect(() => {
+    if (isLoading) return;
+
     const timer = setTimeout(() => {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -43,18 +50,23 @@ function App() {
         },
         { threshold: 0.08 }
       );
-      const elements = document.querySelectorAll('.reveal:not(.visible), .reveal-left:not(.visible), .reveal-right:not(.visible)');
+      const elements = document.querySelectorAll(
+        '.reveal:not(.visible), .reveal-left:not(.visible), .reveal-right:not(.visible)'
+      );
       elements.forEach((el) => observer.observe(el));
       return () => observer.disconnect();
     }, 500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isLoading]);
 
   return (
     <div className="min-h-screen bg-brand-dark text-white">
+      {/* Loading screen — renders on top, self-removes after animation */}
+      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+
       <Navbar />
       <main>
-        <HeroSection />
+        <HeroSection isLoading={isLoading} />
         <MarqueeTicker />
         <ProgramsSection />
         <TrainersSection />

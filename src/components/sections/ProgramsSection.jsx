@@ -141,7 +141,7 @@ export default function ProgramsSection() {
         {/* ================= SLIDER ================= */}
         <div
           ref={sliderRef}
-          className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4"
+          className="flex gap-6 overflow-hidden scroll-smooth pb-4"
         >
           {programs.map((program, i) => {
             const Icon = program.icon;
