@@ -17,9 +17,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
-
     window.addEventListener('scroll', handleScroll);
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -36,29 +34,11 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <a href="#home" className="flex items-center group">
-              {/* Logo Image */}
-             <img
-  src="/logo.png"
-  alt="Fit City Gym"
-  className="h-20 md:h-16 w-auto object-contain"
-/>
-
-              {/* Title */}
-              <div className="leading-none">
-             <h1 className="text-white font-semibold text-3xl tracking-wide uppercase">
-  FIT
-  <span className=" text-3xl text-red-600 font-black">
-    CITY
-  </span>
-</h1>
-                  {/* <h1 className="text-white font-extrabold text-xl lg:text-2xl tracking-wide uppercase">
-                  FIT  <span className=" font-extrabold text-xl lg:text-2xl tracking-wide uppercase text-red-600">CITY</span> GYM
-                </h1> */}
-
-                {/* <p className="text-[9px] lg:text-[10px] text-gray-300 tracking-[0.35em] uppercase mt-1">
-                  RAS AL KHAIMAH · UAE
-                </p> */}
-              </div>
+              <img
+                src="/logo.png"
+                alt="Fit City Gym"
+                className="h-12 md:h-14 w-auto object-contain"
+              />
             </a>
 
             {/* Desktop Nav */}
@@ -68,7 +48,7 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setActiveLink(link.href)}
-                  className={`text-sm font-medium tracking-wider uppercase transition-colors duration-200 ${
+                  className={`title-gotham text-sm font-medium tracking-wider uppercase transition-colors duration-200 ${
                     activeLink === link.href
                       ? 'text-red-500'
                       : 'text-gray-300 hover:text-white'
@@ -81,12 +61,12 @@ export default function Navbar() {
 
             {/* CTA + Mobile Menu */}
             <div className="flex items-center gap-4">
-            <a
-  href="#membership"
-  className="hidden lg:inline-flex items-center px-6 py-2.5 border-2 border-red-600 text-white text-sm font-semibold tracking-widest uppercase hover:bg-red-600 transition-colors duration-200"
->
-  Join Now
-</a>
+              <a
+                href="#membership"
+                className="title-gotham hidden lg:inline-flex items-center px-6 py-2.5 border-2 border-red-600 text-white text-sm font-semibold tracking-widest uppercase hover:bg-red-600 transition-colors duration-200"
+              >
+                Join Now
+              </a>
 
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -112,7 +92,7 @@ export default function Navbar() {
               key={link.label}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="py-5 border-b border-white/10 text-2xl text-white tracking-widest uppercase hover:text-red-500 transition-colors"
+              className="title-gotham py-5 border-b border-white/10 text-2xl text-white tracking-widest uppercase hover:text-red-500 transition-colors"
             >
               {link.label}
             </a>
@@ -121,7 +101,7 @@ export default function Navbar() {
           <a
             href="#membership"
             onClick={() => setMenuOpen(false)}
-            className="mt-8 text-center py-4 bg-red-600 text-white text-xl tracking-widest uppercase"
+            className="title-gotham mt-8 text-center py-4 bg-red-600 text-white text-xl tracking-widest uppercase"
           >
             Join Now
           </a>

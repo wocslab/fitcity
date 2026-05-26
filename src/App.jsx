@@ -67,11 +67,11 @@ function App() {
       <Navbar />
       <main>
         <HeroSection isLoading={isLoading} />
-        <MarqueeTicker />
+        {/* <MarqueeTicker /> */}
         <ProgramsSection />
         <TrainersSection />
         <MembershipSection />
-        <MarqueeTicker />
+        {/* <MarqueeTicker /> */}
         <AboutSection />
         <ContactSection />
       </main>

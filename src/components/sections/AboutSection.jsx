@@ -38,20 +38,21 @@ const features = [
 export default function AboutSection() {
   return (
     <section id="about" className="py-24 bg-brand-dark relative overflow-hidden">
-      {/* Large red text BG */}
+      {/* Large BG text */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[20vw] text-white/[0.02] pointer-events-none select-none uppercase whitespace-nowrap">
         FIT CITY
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+
           {/* Left: Text */}
           <div className="reveal-left">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-8 h-px bg-brand-red" />
-              <span className="text-brand-red text-xs font-accent tracking-[0.3em] uppercase">About Us</span>
+              <span className="title-gotham text-brand-red text-xs font-accent tracking-[0.3em] uppercase">About Us</span>
             </div>
-            <h2 className="foy text-5xl font-semibold sm:text-6xl text-white uppercase tracking-wide leading-tight mb-6">
+            <h2 className="title-gotham text-5xl font-semibold sm:text-6xl text-white uppercase tracking-wide leading-tight mb-6">
               Built For{' '}
               <span className="text-brand-red">Your Best</span>
             </h2>
@@ -63,7 +64,7 @@ export default function AboutSection() {
             </p>
             <a
               href="#membership"
-              className="group inline-flex items-center gap-3 bg-brand-red text-white px-8 py-4 font-semibold  tracking-widest uppercase text-sm hover:bg-brand-red-dark transition-colors duration-300"
+              className="title-gotham group inline-flex items-center gap-3 bg-brand-red text-white px-8 py-4 font-semibold tracking-widest uppercase text-sm hover:bg-brand-red-dark transition-colors duration-300"
             >
               Get Started
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -88,14 +89,14 @@ export default function AboutSection() {
                     { v: '98%', l: 'Satisfaction' },
                   ].map((s) => (
                     <div key={s.l} className="text-center">
-                      <div className="font-seibold text-brand-red text-2xl">{s.v}</div>
-                      <div className="text-gray-400 text-xs uppercase tracking-wider">{s.l}</div>
+                      <div className="title-gotham text-brand-red text-2xl">{s.v}</div>
+                      <div className="title-gotham text-gray-400 text-xs uppercase tracking-wider">{s.l}</div>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-            {/* Decorative corner */}
+            {/* Decorative corners */}
             <div className="absolute -top-4 -right-4 w-24 h-24 border-t-2 border-r-2 border-brand-red" />
             <div className="absolute -bottom-4 -left-4 w-24 h-24 border-b-2 border-l-2 border-brand-red" />
           </div>
@@ -106,16 +107,13 @@ export default function AboutSection() {
           {features.map((feature, i) => (
             <div
               key={feature.title}
-className="reveal group p-6 border-2 border-brand-red/40 bg-transparent hover:border-brand-red transition-all duration-300 card-hover rounded-lg"              style={{ transitionDelay: `${i * 0.1}s` }}
+              className="reveal group p-6 border-2 border-brand-red/40 bg-transparent hover:border-brand-red transition-all duration-300 card-hover rounded-lg"
+              style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <div className="w-12 h-12 border-2 border-brand-red rounded-full flex items-center justify-center mb-4 group-hover:bg-brand-red/10 transition-all duration-300">
-  <feature.icon
-    size={22}
-    className="text-brand-red"
-    strokeWidth={2}
-  />
-</div>
-              <h3 className="font-semibold text-white text-xl uppercase tracking-wide mb-2 group-hover:text-brand-red transition-colors duration-300">
+                <feature.icon size={22} className="text-brand-red" strokeWidth={2} />
+              </div>
+              <h3 className="title-gotham font-semibold text-white text-xl uppercase tracking-wide mb-2 group-hover:text-brand-red transition-colors duration-300">
                 {feature.title}
               </h3>
               <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
@@ -125,13 +123,13 @@ className="reveal group p-6 border-2 border-brand-red/40 bg-transparent hover:bo
           {/* CTA card */}
           <div className="reveal group p-6 bg-brand-red relative overflow-hidden card-hover" style={{ transitionDelay: '0.5s' }}>
             <div className="absolute top-0 right-0 font-display text-8xl text-white/10 leading-none">→</div>
-            <h3 className="font-semibold text-white text-xl uppercase tracking-wide mb-2">Ready to Level Up?</h3>
+            <h3 className="title-gotham font-semibold text-white text-xl uppercase tracking-wide mb-2">Ready to Level Up?</h3>
             <p className="text-white/80 text-sm leading-relaxed mb-6">
               Join FitCity Gym and be your best, every day.
             </p>
             <a
               href="#membership"
-              className="inline-flex items-center gap-2 border border-white/30 text-white px-5 py-2.5 text-sm font-semibold tracking-widest uppercase hover:bg-white hover:text-brand-red transition-all duration-300"
+              className="title-gotham inline-flex items-center gap-2 border border-white/30 text-white px-5 py-2.5 text-sm font-semibold tracking-widest uppercase hover:bg-white hover:text-brand-red transition-all duration-300"
             >
               Get Started <ArrowRight size={14} />
             </a>
