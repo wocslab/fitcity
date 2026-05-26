@@ -35,7 +35,6 @@ function TrainerCard({ trainer }) {
   return (
     <div className="flex-shrink-0 w-[80vw] sm:w-[260px] lg:w-[calc(25%-15px)]">
       <div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111] transition-all duration-500 hover:-translate-y-2 hover:border-red-600/40 hover:shadow-[0_0_35px_rgba(220,38,38,0.18)]">
-        {/* IMAGE */}
         <div className="relative h-[420px] sm:h-80 overflow-hidden">
           <img
             src={trainer.image}
@@ -46,8 +45,6 @@ function TrainerCard({ trainer }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70" />
           <SocialIcons />
         </div>
-
-        {/* INFO */}
         <div className="p-5">
           <h3 className="title-gotham text-xl font-bold uppercase tracking-wide text-white">
             {trainer.name}
@@ -59,8 +56,6 @@ function TrainerCard({ trainer }) {
             {trainer.specialty}
           </p>
         </div>
-
-        {/* Bottom Hover Line */}
         <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-red-600 transition-all duration-500 group-hover:w-full" />
       </div>
     </div>
@@ -68,78 +63,115 @@ function TrainerCard({ trainer }) {
 }
 
 export default function TrainersSection() {
-  const sliderRef = useRef(null);
+  const sliderRef   = useRef(null);
   const [dragging, setDragging] = useState(false);
 
-  const isDragging  = useRef(false);
-  const startX      = useRef(0);
-  const scrollStart = useRef(0);
-  const lastX       = useRef(0);
-  const velocity    = useRef(0);
-
   // ── Desktop pointer drag ──────────────────────────────────────────
+  const isPointerDragging = useRef(false);
+  const pointerStartX     = useRef(0);
+  const pointerScrollStart = useRef(0);
+  const pointerLastX      = useRef(0);
+  const pointerVelocity   = useRef(0);
+
   function handlePointerDown(e) {
     if (e.button !== 0) return;
-    isDragging.current  = true;
-    startX.current      = e.clientX;
-    lastX.current       = e.clientX;
-    velocity.current    = 0;
-    scrollStart.current = sliderRef.current.scrollLeft;
+    isPointerDragging.current   = true;
+    pointerStartX.current       = e.clientX;
+    pointerLastX.current        = e.clientX;
+    pointerVelocity.current     = 0;
+    pointerScrollStart.current  = sliderRef.current.scrollLeft;
     sliderRef.current.setPointerCapture(e.pointerId);
     setDragging(true);
   }
   function handlePointerMove(e) {
-    if (!isDragging.current) return;
-    velocity.current = e.clientX - lastX.current;
-    lastX.current    = e.clientX;
-    sliderRef.current.scrollLeft = scrollStart.current + (startX.current - e.clientX);
+    if (!isPointerDragging.current) return;
+    pointerVelocity.current = e.clientX - pointerLastX.current;
+    pointerLastX.current    = e.clientX;
+    sliderRef.current.scrollLeft = pointerScrollStart.current + (pointerStartX.current - e.clientX);
   }
   function handlePointerUp() {
-    if (!isDragging.current) return;
-    isDragging.current = false;
+    if (!isPointerDragging.current) return;
+    isPointerDragging.current = false;
     setDragging(false);
-    sliderRef.current.scrollBy({ left: -velocity.current * 4, behavior: "smooth" });
+    sliderRef.current.scrollBy({ left: -pointerVelocity.current * 4, behavior: "smooth" });
   }
 
-  // ── Native touch — useEffect so we can pass { passive: false } ───
-  // Required to call e.preventDefault() and block vertical page scroll
-  // while the user is swiping horizontally inside the slider.
+  // ── Touch handling ────────────────────────────────────────────────
+  // Attached via useEffect with { passive: false } so e.preventDefault()
+  // actually works (React synthetic handlers are always passive).
+  // Includes velocity tracking + momentum flick on touchend.
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
 
-    let touchStartX     = 0;
-    let touchStartY     = 0;
-    let scrollStartLeft = 0;
-    let isHorizontal    = null;
+    let startX       = 0;
+    let startY       = 0;
+    let scrollLeft   = 0;
+    let lastX        = 0;
+    let lastTime     = 0;
+    let velocity     = 0;
+    let isHoriz      = null;  // direction locked on first move
+    let rafId        = null;
 
     const onTouchStart = (e) => {
-      touchStartX     = e.touches[0].clientX;
-      touchStartY     = e.touches[0].clientY;
-      scrollStartLeft = el.scrollLeft;
-      isHorizontal    = null;
+      // cancel any ongoing momentum
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+
+      startX     = e.touches[0].clientX;
+      startY     = e.touches[0].clientY;
+      scrollLeft = el.scrollLeft;
+      lastX      = startX;
+      lastTime   = Date.now();
+      velocity   = 0;
+      isHoriz    = null;
     };
 
     const onTouchMove = (e) => {
-      const dx = e.touches[0].clientX - touchStartX;
-      const dy = e.touches[0].clientY - touchStartY;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
 
-      if (isHorizontal === null) {
-        isHorizontal = Math.abs(dx) > Math.abs(dy);
+      // Lock direction on first significant move
+      if (isHoriz === null && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+        isHoriz = Math.abs(dx) >= Math.abs(dy);
       }
+      if (!isHoriz) return; // vertical — let page scroll naturally
 
-      if (isHorizontal) {
-        e.preventDefault(); // stop page from scrolling vertically
-        el.scrollLeft = scrollStartLeft - dx;
-      }
+      e.preventDefault(); // block page scroll while swiping slider
+
+      // Track velocity (px/ms) using last two frames
+      const now = Date.now();
+      const dt  = now - lastTime || 1;
+      velocity  = (e.touches[0].clientX - lastX) / dt;
+      lastX     = e.touches[0].clientX;
+      lastTime  = now;
+
+      el.scrollLeft = scrollLeft - dx;
     };
 
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    const onTouchEnd = () => {
+      if (!isHoriz) return;
+
+      // Momentum: decay velocity with rAF for buttery feel
+      let v = velocity * 16; // scale to px/frame (~16ms)
+
+      const momentum = () => {
+        if (Math.abs(v) < 0.5) return;
+        el.scrollLeft -= v;
+        v *= 0.92; // friction factor — tune between 0.88 (fast stop) and 0.95 (long glide)
+        rafId = requestAnimationFrame(momentum);
+      };
+      rafId = requestAnimationFrame(momentum);
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true  });
     el.addEventListener("touchmove",  onTouchMove,  { passive: false });
+    el.addEventListener("touchend",   onTouchEnd,   { passive: true  });
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove",  onTouchMove);
+      el.removeEventListener("touchend",   onTouchEnd);
     };
   }, []);
 
@@ -184,13 +216,15 @@ export default function TrainersSection() {
           onPointerLeave={handlePointerUp}
           style={{
             cursor: dragging ? "grabbing" : "grab",
-            WebkitOverflowScrolling: "touch",
             overflowX: "auto",
             overflowY: "hidden",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
+            // Disable browser's own touch-scroll on this element so our
+            // JS momentum takes over; vertical scroll still works on the page
+            touchAction: "pan-y",
           }}
-          className="flex gap-5 pb-4 scroll-smooth select-none [&::-webkit-scrollbar]:hidden"
+          className="flex gap-5 pb-4 select-none [&::-webkit-scrollbar]:hidden"
         >
           {trainers.map((trainer, i) => (
             <TrainerCard key={i} trainer={trainer} />

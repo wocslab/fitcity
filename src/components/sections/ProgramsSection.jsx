@@ -17,83 +17,110 @@ const programs = [
 
 export default function ProgramsSection() {
   const sliderRef = useRef(null);
-
-  // ── Desktop drag ──────────────────────────────────────────────────
-  const isDragging  = useRef(false);
-  const startX      = useRef(0);
-  const scrollStart = useRef(0);
-  const lastX       = useRef(0);
-  const velocity    = useRef(0);
   const [dragging, setDragging] = useState(false);
+
+  // ── Desktop pointer drag ──────────────────────────────────────────
+  const isPointerDragging  = useRef(false);
+  const pointerStartX      = useRef(0);
+  const pointerScrollStart = useRef(0);
+  const pointerLastX       = useRef(0);
+  const pointerVelocity    = useRef(0);
 
   const scrollLeft  = () => sliderRef.current.scrollBy({ left: -370, behavior: "smooth" });
   const scrollRight = () => sliderRef.current.scrollBy({ left:  370, behavior: "smooth" });
 
   const onPointerDown = (e) => {
     if (e.button !== 0) return;
-    isDragging.current  = true;
-    startX.current      = e.clientX;
-    lastX.current       = e.clientX;
-    velocity.current    = 0;
-    scrollStart.current = sliderRef.current.scrollLeft;
+    isPointerDragging.current   = true;
+    pointerStartX.current       = e.clientX;
+    pointerLastX.current        = e.clientX;
+    pointerVelocity.current     = 0;
+    pointerScrollStart.current  = sliderRef.current.scrollLeft;
     sliderRef.current.setPointerCapture(e.pointerId);
     setDragging(true);
   };
   const onPointerMove = (e) => {
-    if (!isDragging.current) return;
-    velocity.current = e.clientX - lastX.current;
-    lastX.current    = e.clientX;
-    sliderRef.current.scrollLeft = scrollStart.current + (startX.current - e.clientX);
+    if (!isPointerDragging.current) return;
+    pointerVelocity.current = e.clientX - pointerLastX.current;
+    pointerLastX.current    = e.clientX;
+    sliderRef.current.scrollLeft = pointerScrollStart.current + (pointerStartX.current - e.clientX);
   };
   const onPointerUp = () => {
-    if (!isDragging.current) return;
-    isDragging.current = false;
+    if (!isPointerDragging.current) return;
+    isPointerDragging.current = false;
     setDragging(false);
-    // momentum flick
-    sliderRef.current.scrollBy({ left: -velocity.current * 4, behavior: "smooth" });
+    sliderRef.current.scrollBy({ left: -pointerVelocity.current * 4, behavior: "smooth" });
   };
 
-  // ── Native touch — attached via useEffect so we can pass { passive: false } ──
-  // This lets us call e.preventDefault() to block the page from scrolling
-  // vertically while the user is swiping horizontally in the slider.
+  // ── Touch handling with velocity + rAF momentum ──────────────────
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
 
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let scrollStartLeft = 0;
-    let isHorizontal = null; // determined on first move
+    let startX      = 0;
+    let startY      = 0;
+    let scrollLeft  = 0;
+    let lastX       = 0;
+    let lastTime    = 0;
+    let velocity    = 0;
+    let isHoriz     = null;
+    let rafId       = null;
 
     const onTouchStart = (e) => {
-      touchStartX     = e.touches[0].clientX;
-      touchStartY     = e.touches[0].clientY;
-      scrollStartLeft = el.scrollLeft;
-      isHorizontal    = null;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      startX     = e.touches[0].clientX;
+      startY     = e.touches[0].clientY;
+      scrollLeft = el.scrollLeft;
+      lastX      = startX;
+      lastTime   = Date.now();
+      velocity   = 0;
+      isHoriz    = null;
     };
 
     const onTouchMove = (e) => {
-      const dx = e.touches[0].clientX - touchStartX;
-      const dy = e.touches[0].clientY - touchStartY;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
 
-      // Decide direction on first move only
-      if (isHorizontal === null) {
-        isHorizontal = Math.abs(dx) > Math.abs(dy);
+      // Lock direction after first 4px of movement
+      if (isHoriz === null && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+        isHoriz = Math.abs(dx) >= Math.abs(dy);
       }
+      if (!isHoriz) return;
 
-      if (isHorizontal) {
-        e.preventDefault(); // block vertical page scroll
-        el.scrollLeft = scrollStartLeft - dx;
-      }
-      // if vertical, do nothing — let the page scroll naturally
+      e.preventDefault(); // block page vertical scroll
+
+      const now = Date.now();
+      const dt  = now - lastTime || 1;
+      velocity  = (e.touches[0].clientX - lastX) / dt;
+      lastX     = e.touches[0].clientX;
+      lastTime  = now;
+
+      el.scrollLeft = scrollLeft - dx;
     };
 
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    const onTouchEnd = () => {
+      if (!isHoriz) return;
+
+      // rAF momentum flick — decays with friction
+      let v = velocity * 16;
+      const momentum = () => {
+        if (Math.abs(v) < 0.5) return;
+        el.scrollLeft -= v;
+        v *= 0.92;
+        rafId = requestAnimationFrame(momentum);
+      };
+      rafId = requestAnimationFrame(momentum);
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true  });
     el.addEventListener("touchmove",  onTouchMove,  { passive: false });
+    el.addEventListener("touchend",   onTouchEnd,   { passive: true  });
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove",  onTouchMove);
+      el.removeEventListener("touchend",   onTouchEnd);
     };
   }, []);
 
@@ -144,12 +171,13 @@ export default function ProgramsSection() {
           onPointerLeave={onPointerUp}
           style={{
             cursor: dragging ? "grabbing" : "grab",
-            // Let the browser handle horizontal momentum natively on iOS
-            WebkitOverflowScrolling: "touch",
             overflowX: "auto",
             overflowY: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            touchAction: "pan-y", // let browser handle vertical, JS handles horizontal
           }}
-          className="flex gap-6 pb-4 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none"
+          className="flex gap-6 pb-4 select-none [&::-webkit-scrollbar]:hidden"
         >
           {programs.map((program, i) => {
             const Icon = program.icon;
