@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   RiBoxingLine, RiFlashlightLine, RiTeamLine,
   RiHeartPulseLine, RiFireLine, RiRunLine,
@@ -17,11 +17,13 @@ const programs = [
 
 export default function ProgramsSection() {
   const sliderRef = useRef(null);
-  const isDragging   = useRef(false);
-  const startX       = useRef(0);
-  const scrollStart  = useRef(0);
-  const lastX        = useRef(0);
-  const velocity     = useRef(0);
+
+  // ── Desktop drag ──────────────────────────────────────────────────
+  const isDragging  = useRef(false);
+  const startX      = useRef(0);
+  const scrollStart = useRef(0);
+  const lastX       = useRef(0);
+  const velocity    = useRef(0);
   const [dragging, setDragging] = useState(false);
 
   const scrollLeft  = () => sliderRef.current.scrollBy({ left: -370, behavior: "smooth" });
@@ -47,18 +49,53 @@ export default function ProgramsSection() {
     if (!isDragging.current) return;
     isDragging.current = false;
     setDragging(false);
+    // momentum flick
     sliderRef.current.scrollBy({ left: -velocity.current * 4, behavior: "smooth" });
   };
 
-  const touchStartX      = useRef(0);
-  const touchScrollStart = useRef(0);
-  const onTouchStart = (e) => {
-    touchStartX.current      = e.touches[0].clientX;
-    touchScrollStart.current = sliderRef.current.scrollLeft;
-  };
-  const onTouchMove = (e) => {
-    sliderRef.current.scrollLeft = touchScrollStart.current + (touchStartX.current - e.touches[0].clientX);
-  };
+  // ── Native touch — attached via useEffect so we can pass { passive: false } ──
+  // This lets us call e.preventDefault() to block the page from scrolling
+  // vertically while the user is swiping horizontally in the slider.
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let scrollStartLeft = 0;
+    let isHorizontal = null; // determined on first move
+
+    const onTouchStart = (e) => {
+      touchStartX     = e.touches[0].clientX;
+      touchStartY     = e.touches[0].clientY;
+      scrollStartLeft = el.scrollLeft;
+      isHorizontal    = null;
+    };
+
+    const onTouchMove = (e) => {
+      const dx = e.touches[0].clientX - touchStartX;
+      const dy = e.touches[0].clientY - touchStartY;
+
+      // Decide direction on first move only
+      if (isHorizontal === null) {
+        isHorizontal = Math.abs(dx) > Math.abs(dy);
+      }
+
+      if (isHorizontal) {
+        e.preventDefault(); // block vertical page scroll
+        el.scrollLeft = scrollStartLeft - dx;
+      }
+      // if vertical, do nothing — let the page scroll naturally
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove",  onTouchMove,  { passive: false });
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove",  onTouchMove);
+    };
+  }, []);
 
   return (
     <section id="programs" className="relative overflow-hidden bg-black py-16 md:py-16">
@@ -68,28 +105,31 @@ export default function ProgramsSection() {
       />
 
       <div className="max-w-7xl mx-auto px-5 md:px-8">
+
         {/* HEADER */}
         <div className="flex items-center justify-between mb-10 md:mb-14">
-          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}>
-            <div className="flex items-center gap-3">
-              <span className="title-gotham uppercase text-white font-bold text-2xl sm:text-3xl">
-                <span className="text-red-600">Our</span> Programs
-              </span>
-            </div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+          >
+            <span className="title-gotham uppercase text-white font-bold text-2xl sm:text-3xl">
+              <span className="text-red-600">Our</span> Programs
+            </span>
           </motion.div>
 
           <div className="hidden sm:flex items-center gap-3">
-            <button onClick={scrollLeft}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/10 bg-[#111]
-              text-white flex items-center justify-center
-              hover:bg-red-600 hover:border-red-600 transition-all duration-300">
+            <button
+              onClick={scrollLeft}
+              className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/10 bg-[#111] text-white flex items-center justify-center hover:bg-red-600 hover:border-red-600 transition-all duration-300"
+            >
               <ChevronLeft size={20} />
             </button>
-            <button onClick={scrollRight}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/10 bg-[#111]
-              text-white flex items-center justify-center
-              hover:bg-red-600 hover:border-red-600 transition-all duration-300">
+            <button
+              onClick={scrollRight}
+              className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/10 bg-[#111] text-white flex items-center justify-center hover:bg-red-600 hover:border-red-600 transition-all duration-300"
+            >
               <ChevronRight size={20} />
             </button>
           </div>
@@ -102,10 +142,14 @@ export default function ProgramsSection() {
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerLeave={onPointerUp}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          style={{ cursor: dragging ? "grabbing" : "grab" }}
-          className="flex gap-6 pb-4 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none"
+          style={{
+            cursor: dragging ? "grabbing" : "grab",
+            // Let the browser handle horizontal momentum natively on iOS
+            WebkitOverflowScrolling: "touch",
+            overflowX: "auto",
+            overflowY: "hidden",
+          }}
+          className="flex gap-6 pb-4 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none"
         >
           {programs.map((program, i) => {
             const Icon = program.icon;
@@ -117,7 +161,7 @@ export default function ProgramsSection() {
                 transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
-                className="group relative flex-shrink-0 w-[85vw] sm:w-[320px] lg:w-[350px]
+                className="group relative flex-shrink-0 w-[80vw] sm:w-[320px] lg:w-[350px]
                   overflow-hidden rounded-2xl border border-white/5 bg-[#0f0f0f]
                   hover:border-red-600/40 hover:shadow-[0_0_35px_rgba(220,38,38,0.2)]
                   transition-all duration-500"
@@ -125,19 +169,24 @@ export default function ProgramsSection() {
                 {/* IMAGE */}
                 <div className="relative h-72 overflow-hidden">
                   <motion.img
-                    src={program.image} alt={program.title}
+                    src={program.image}
+                    alt={program.title}
                     className="h-full w-full object-cover"
-                    whileHover={{ scale: 1.08 }} transition={{ duration: 0.7 }}
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.7 }}
                     draggable={false}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
                   <motion.div
-                    initial={{ opacity: 0 }} whileHover={{ opacity: 1 }} transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                     className="absolute inset-0"
                     style={{ background: "radial-gradient(circle at top, rgba(220,38,38,0.18), transparent 65%)" }}
                   />
                   <motion.div
-                    whileHover={{ scale: 1.08, rotate: 4 }} transition={{ duration: 0.3 }}
+                    whileHover={{ scale: 1.08, rotate: 4 }}
+                    transition={{ duration: 0.3 }}
                     className="absolute bottom-5 left-5 flex h-14 w-14 items-center justify-center
                     rounded-2xl border border-red-600/30 bg-black/70 backdrop-blur-md
                     transition-all duration-500 group-hover:bg-red-600"
@@ -148,14 +197,16 @@ export default function ProgramsSection() {
 
                 {/* CONTENT */}
                 <div className="relative z-10 p-6">
-                  <h3 className="title-gotham text-xl font-bold uppercase tracking-wide text-white
-                    transition-colors duration-300 group-hover:text-red-500">
+                  <h3 className="title-gotham text-xl font-bold uppercase tracking-wide text-white transition-colors duration-300 group-hover:text-red-500">
                     {program.title}
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-gray-400">{program.desc}</p>
-                  <motion.a href="#" whileHover={{ x: 6 }} transition={{ duration: 0.25 }}
-                    className="title-gotham mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em]
-                    text-red-500 transition-all duration-300">
+                  <motion.a
+                    href="#"
+                    whileHover={{ x: 6 }}
+                    transition={{ duration: 0.25 }}
+                    className="title-gotham mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-red-500 transition-all duration-300"
+                  >
                     Learn More
                     <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                   </motion.a>
@@ -163,7 +214,9 @@ export default function ProgramsSection() {
 
                 {/* Bottom Border */}
                 <motion.div
-                  initial={{ width: 0 }} whileHover={{ width: "100%" }} transition={{ duration: 0.4 }}
+                  initial={{ width: 0 }}
+                  whileHover={{ width: "100%" }}
+                  transition={{ duration: 0.4 }}
                   className="absolute bottom-0 left-0 h-[2px] bg-red-600"
                 />
               </motion.div>

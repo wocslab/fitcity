@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Instagram,
   Facebook,
@@ -71,14 +71,13 @@ export default function TrainersSection() {
   const sliderRef = useRef(null);
   const [dragging, setDragging] = useState(false);
 
-  const isDragging       = useRef(false);
-  const startX           = useRef(0);
-  const scrollStart      = useRef(0);
-  const lastX            = useRef(0);
-  const velocity         = useRef(0);
-  const touchStartX      = useRef(0);
-  const touchScrollStart = useRef(0);
+  const isDragging  = useRef(false);
+  const startX      = useRef(0);
+  const scrollStart = useRef(0);
+  const lastX       = useRef(0);
+  const velocity    = useRef(0);
 
+  // ── Desktop pointer drag ──────────────────────────────────────────
   function handlePointerDown(e) {
     if (e.button !== 0) return;
     isDragging.current  = true;
@@ -101,13 +100,49 @@ export default function TrainersSection() {
     setDragging(false);
     sliderRef.current.scrollBy({ left: -velocity.current * 4, behavior: "smooth" });
   }
-  function handleTouchStart(e) {
-    touchStartX.current      = e.touches[0].clientX;
-    touchScrollStart.current = sliderRef.current.scrollLeft;
-  }
-  function handleTouchMove(e) {
-    sliderRef.current.scrollLeft = touchScrollStart.current + (touchStartX.current - e.touches[0].clientX);
-  }
+
+  // ── Native touch — useEffect so we can pass { passive: false } ───
+  // Required to call e.preventDefault() and block vertical page scroll
+  // while the user is swiping horizontally inside the slider.
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+
+    let touchStartX     = 0;
+    let touchStartY     = 0;
+    let scrollStartLeft = 0;
+    let isHorizontal    = null;
+
+    const onTouchStart = (e) => {
+      touchStartX     = e.touches[0].clientX;
+      touchStartY     = e.touches[0].clientY;
+      scrollStartLeft = el.scrollLeft;
+      isHorizontal    = null;
+    };
+
+    const onTouchMove = (e) => {
+      const dx = e.touches[0].clientX - touchStartX;
+      const dy = e.touches[0].clientY - touchStartY;
+
+      if (isHorizontal === null) {
+        isHorizontal = Math.abs(dx) > Math.abs(dy);
+      }
+
+      if (isHorizontal) {
+        e.preventDefault(); // stop page from scrolling vertically
+        el.scrollLeft = scrollStartLeft - dx;
+      }
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove",  onTouchMove,  { passive: false });
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove",  onTouchMove);
+    };
+  }, []);
+
   function handleScrollLeft()  { sliderRef.current.scrollBy({ left: -300, behavior: "smooth" }); }
   function handleScrollRight() { sliderRef.current.scrollBy({ left:  300, behavior: "smooth" }); }
 
@@ -116,6 +151,7 @@ export default function TrainersSection() {
       <div className="absolute -bottom-40 left-20 w-96 h-96 rounded-full bg-red-600/10 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-5 md:px-8">
+
         {/* HEADER */}
         <div className="mb-10 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -146,10 +182,15 @@ export default function TrainersSection() {
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerLeave={handlePointerUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          style={{ cursor: dragging ? "grabbing" : "grab", msOverflowStyle: "none", scrollbarWidth: "none" }}
-          className="flex gap-5 pb-4 overflow-x-auto scroll-smooth select-none"
+          style={{
+            cursor: dragging ? "grabbing" : "grab",
+            WebkitOverflowScrolling: "touch",
+            overflowX: "auto",
+            overflowY: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+          className="flex gap-5 pb-4 scroll-smooth select-none [&::-webkit-scrollbar]:hidden"
         >
           {trainers.map((trainer, i) => (
             <TrainerCard key={i} trainer={trainer} />
@@ -160,10 +201,6 @@ export default function TrainersSection() {
           ← swipe to explore →
         </p>
       </div>
-
-      <style>{`
-        #trainers [style*="scrollbar-width"]::-webkit-scrollbar { display: none; }
-      `}</style>
     </section>
   );
 }
