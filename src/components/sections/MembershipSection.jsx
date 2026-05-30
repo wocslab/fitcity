@@ -139,7 +139,7 @@ export default function MembershipSection() {
                   {plan.popular && (
                     <span className="title-gotham bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 flex-shrink-0">
                       <Flame size={9} />
-                      Most Popular
+                       Popular
                     </span>
                   )}
                 </div>
