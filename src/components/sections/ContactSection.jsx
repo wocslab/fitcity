@@ -71,10 +71,22 @@ export default function ContactSection() {
 
             <div className="space-y-6">
               {[
-                { Icon: Phone,  label: "+91 98765 43210",                               href: "tel:+919876543210" },
-                { Icon: Mail,   label: "hello@fitcity.com",                             href: "mailto:hello@fitcity.com" },
-                { Icon: MapPin, label: "Al Hamra Industrial Area, Ras Al Khaimah, UAE", href: "#" },
-              ].map((item) => {
+  {
+    Icon: Phone,
+    label: "+971 50 169 5989",
+    href: "tel:+971501695989",
+  },
+  {
+    Icon: Mail,
+    label: "fitcityrak@gmail.com",
+    href: "mailto:fitcityrak@gmail.com",
+  },
+  {
+    Icon: MapPin,
+    label: "Al Juwais, Nakheel Road Near Nesto Hyper Market, Ras Al Khaimah, UAE",
+    href: "https://maps.app.goo.gl/7n9TisB7qcavNV6T9",
+  },
+].map((item) => {
                 const Icon = item.Icon;
                 return (
                   <a key={item.label} href={item.href} className="flex items-start gap-4 group">
@@ -84,7 +96,7 @@ export default function ContactSection() {
                       transition-all duration-300">
                       <Icon size={16} className="text-red-500 group-hover:text-white transition-colors duration-300" />
                     </div>
-                    <span className="title-gotham text-gray-400 text-sm leading-relaxed pt-2
+                    <span className="title-gotham  text-gray-400 text-sm leading-relaxed pt-2
                       group-hover:text-white transition-colors duration-200">
                       {item.label}
                     </span>
@@ -162,33 +174,40 @@ export default function ContactSection() {
 
         {/* FULL WIDTH MAP */}
         <div className="relative h-72 sm:h-96 overflow-hidden border border-white/10 rounded-xl">
-          <iframe
-            title="Fit City Gym Location"
-            src="https://www.google.com/maps?q=Al+Hamra+Industrial+Area+Ras+Al+Khaimah+UAE&output=embed"
-            width="100%"
-            height="100%"
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="absolute inset-0 w-full h-full"
-            style={{
-              filter: "invert(92%) hue-rotate(180deg) saturate(0.3) brightness(0.6)",
-            }}
-          />
-          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+  <iframe
+    title="Fit City Gym Location"
+    src="https://www.google.com/maps?q=Al+Juwais+Nakheel+Road+Near+Nesto+Hyper+Market+Ras+Al+Khaimah+UAE&output=embed"
+    width="100%"
+    height="100%"
+    allowFullScreen=""
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+    className="absolute inset-0 w-full h-full"
+    style={{
+      filter:
+        "invert(92%) hue-rotate(180deg) saturate(0.3) brightness(0.6)",
+    }}
+  />
+  <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
-          {/* Pin card */}
-          <div className="absolute bottom-4 left-4 flex items-center gap-3
-            bg-black/85 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 pointer-events-none">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/20 border border-red-600/30 shrink-0">
-              <MapPin size={15} className="text-red-500" />
-            </div>
-            <div>
-              <p className="title-gotham text-white text-xs font-bold">Fit City Gym</p>
-              <p className="title-gotham text-gray-400 text-[10px]">Ras Al Khaimah, UAE</p>
-            </div>
-          </div>
-        </div>
+  <div
+    className="absolute bottom-4 left-4 flex items-center gap-3
+    bg-black/85 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 pointer-events-none"
+  >
+    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/20 border border-red-600/30 shrink-0">
+      <MapPin size={15} className="text-red-500" />
+    </div>
+
+    <div>
+      <p className="title-gotham text-white text-xs font-bold">
+        Fit City Gym
+      </p>
+      <p className="title-gotham text-gray-400 text-[10px]">
+        Al Juwais, Nakheel Road, Ras Al Khaimah, UAE
+      </p>
+    </div>
+  </div>
+</div>
 
       </div>
     </section>

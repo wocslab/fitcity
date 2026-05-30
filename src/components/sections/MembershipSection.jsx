@@ -1,5 +1,14 @@
 import { useState } from 'react';
 import { ArrowRight, Flame, Users, UserCheck, GraduationCap } from 'lucide-react';
+import { RiMedalLine, RiEyeOffLine, RiPauseLine, RiCloseLine } from 'react-icons/ri';
+
+const WHATSAPP_NUMBER = '971501695989';
+
+function getWhatsappURL(plan, tab) {
+  const bonus = plan.bonus ? ` (${plan.bonus})` : '';
+  const msg = `Hi, I'm interested in joining Fit City Gym!\n\nPlan: ${tab}\nDuration: ${plan.duration}\nPrice: ${plan.price} AED${bonus}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
 
 const plans = [
   {
@@ -7,11 +16,11 @@ const plans = [
     label: 'Basic',
     icon: UserCheck,
     items: [
-      { duration: '1 Month',   price: '129',  bonus: null,             featured: false },
-      { duration: '50 Days',   price: '199',  bonus: null,             featured: false },
-      { duration: '3 Months',  price: '399',  bonus: '+1 Month Free',  featured: false },
-      { duration: '6 Months',  price: '699',  bonus: '+2 Months Free', featured: false },
-      { duration: '12 Months', price: '1299', bonus: '+1 Month PT',    featured: true  },
+      { duration: '1 Month',   price: '129',  bonus: null,             featured: false, popular: false },
+      { duration: '50 Days',   price: '199',  bonus: null,             featured: false, popular: true  },
+      { duration: '3 Months',  price: '399',  bonus: '+1 Month Free',  featured: false, popular: false },
+      { duration: '6 Months',  price: '699',  bonus: '+2 Months Free', featured: false, popular: false },
+      { duration: '12 Months', price: '1299', bonus: '+1 Month PT',    featured: true,  popular: false },
     ],
   },
   {
@@ -19,9 +28,9 @@ const plans = [
     label: 'Students',
     icon: GraduationCap,
     items: [
-      { duration: '1 Month',  price: '111',  bonus: null,             featured: false },
-      { duration: '3 Months', price: '333',  bonus: '+1 Month Free',  featured: false },
-      { duration: '6 Months', price: '666',  bonus: '+2 Months Free', featured: true  },
+      { duration: '1 Month',  price: '111',  bonus: null,             featured: false, popular: false },
+      { duration: '3 Months', price: '333',  bonus: '+1 Month Free',  featured: false, popular: false },
+      { duration: '6 Months', price: '666',  bonus: '+2 Months Free', featured: true,  popular: false },
     ],
   },
   {
@@ -29,9 +38,9 @@ const plans = [
     label: 'Couple',
     icon: Users,
     items: [
-      { duration: '1 Month',  price: '249',  bonus: null,             featured: false },
-      { duration: '3 Months', price: '699',  bonus: '+1 Month Free',  featured: false },
-      { duration: '6 Months', price: '1299', bonus: '+1 Month PT',    featured: false },
+      { duration: '1 Month',  price: '249',  bonus: null,            featured: false, popular: false },
+      { duration: '3 Months', price: '699',  bonus: '+1 Month Free', featured: false, popular: false },
+      { duration: '6 Months', price: '1299', bonus: '+1 Month PT',   featured: false, popular: false },
     ],
   },
 ];
@@ -43,7 +52,7 @@ export default function MembershipSection() {
   return (
     <section
       id="membership"
-      className="relative overflow-hidden bg-black py-20 text-white"
+      className="relative overflow-hidden bg-black py-10 text-white"
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -55,12 +64,6 @@ export default function MembershipSection() {
 
         {/* HEADER */}
         <div className="mb-10 max-w-3xl">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-12 bg-red-500" />
-            <span className="title-gotham uppercase tracking-[0.3em] text-red-500 text-xs font-semibold">
-              Membership Plans
-            </span>
-          </div>
           <h2 className="title-gotham uppercase text-red-500 font-semibold text-2xl sm:text-3xl lg:text-4xl leading-tight">
             Choose Your{' '}
             <span className="text-white">Perfect Plan</span>
@@ -111,7 +114,7 @@ export default function MembershipSection() {
                 group relative overflow-hidden rounded-2xl border backdrop-blur-sm
                 flex flex-col transition-all duration-500 hover:-translate-y-2
                 hover:shadow-[0_0_35px_rgba(255,0,0,0.35)]
-                ${plan.featured
+                ${plan.featured || plan.popular
                   ? 'border-red-500 bg-red-500/10'
                   : 'border-red-500/30 bg-white/[0.03]'
                 }
@@ -121,12 +124,19 @@ export default function MembershipSection() {
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_top,rgba(255,0,0,0.15),transparent_60%)]" />
 
               <div className="relative z-10 p-5 sm:p-6 flex flex-col flex-1">
-                {/* Duration + badge */}
+
+                {/* Duration + badges */}
                 <div className="flex items-center gap-2 mb-4 flex-wrap">
                   <p className="title-gotham text-gray-400 uppercase text-xs tracking-[0.25em]">
                     {plan.duration}
                   </p>
                   {plan.featured && (
+                    <span className="title-gotham bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 flex-shrink-0">
+                      <Flame size={9} />
+                      Most Popular
+                    </span>
+                  )}
+                  {plan.popular && (
                     <span className="title-gotham bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 flex-shrink-0">
                       <Flame size={9} />
                       Most Popular
@@ -151,13 +161,16 @@ export default function MembershipSection() {
                   )}
                 </div>
 
-                {/* Button */}
-                <button
+                {/* Button — WhatsApp with plan details */}
+                <a
+                  href={getWhatsappURL(plan, activeSection.label)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`
                     title-gotham mt-auto flex items-center justify-center gap-2 rounded-xl py-3
                     text-xs sm:text-sm font-bold uppercase tracking-[0.15em]
                     transition-all duration-300 active:scale-95
-                    ${plan.featured
+                    ${plan.featured || plan.popular
                       ? 'bg-red-500 hover:bg-red-400 text-white shadow-[0_4px_20px_rgba(220,38,38,0.5)] hover:shadow-[0_4px_28px_rgba(220,38,38,0.7)]'
                       : 'bg-red-950 hover:bg-red-900 border border-red-800/60 hover:border-red-600 text-red-200 hover:text-white'
                     }
@@ -165,27 +178,32 @@ export default function MembershipSection() {
                 >
                   Get Started
                   <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
+                </a>
               </div>
             </div>
           ))}
         </div>
 
         {/* BOTTOM FEATURES */}
-        <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-white/10 pt-8">
+         <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-white/10 pt-8">
           {[
-            { title: 'No Joining Fee',    desc: 'Start your fitness journey with zero joining fees.' },
-            { title: 'No Hidden Charges', desc: 'Transparent pricing with no surprises.' },
-            { title: 'Freeze Anytime',    desc: 'Pause your membership whenever needed.' },
-            { title: 'Cancel Anytime',    desc: 'Flexible cancellation with no hassle.' },
-          ].map((item) => (
-            <div key={item.title} className="group">
-              <h4 className="title-gotham text-sm font-bold uppercase tracking-wider text-white mb-2 group-hover:text-red-500 transition">
-                {item.title}
-              </h4>
-              <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
+            { icon: RiMedalLine,   title: 'No Joining Fee'    },
+            { icon: RiEyeOffLine,  title: 'No Hidden Charges' },
+            { icon: RiPauseLine,   title: 'Freeze Anytime'    },
+            { icon: RiCloseLine,   title: 'Cancel Anytime'    },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.title} className="group flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full border border-red-600/30 bg-red-600/5 group-hover:bg-red-600 group-hover:border-red-600 transition-all duration-300">
+                  <Icon className="text-2xl text-red-500 group-hover:text-white transition-colors duration-300" />
+                </div>
+                <h4 className="title-gotham text-xs font-bold uppercase tracking-wider text-white group-hover:text-red-500 transition">
+                  {item.title}
+                </h4>
+              </div>
+            );
+          })}
         </div>
       </div>
 

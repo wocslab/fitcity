@@ -8,11 +8,13 @@ import {
 } from "lucide-react";
 
 const trainers = [
+    { name: "Siddique", role: "CrossFit Coach",   image: "/trainers/siddique.png", specialty: "Strength & Endurance" },
+
   { name: "Akhil",    role: "Strength Coach",   image: "/trainers/akhil.png",    specialty: "Powerlifting & Hypertrophy" },
-  { name: "Ammu",     role: "Fitness Trainer",  image: "/trainers/ammu.png",     specialty: "Functional & HIIT" },
-  { name: "Aswin",    role: "HIIT Specialist",  image: "/trainers/aswin.png",    specialty: "Conditioning & Cardio" },
+    { name: "Aswin",    role: "HIIT Specialist",  image: "/trainers/aswin.png",    specialty: "Conditioning & Cardio" },
   { name: "Rajinas",  role: "Yoga Instructor",  image: "/trainers/rajinas.png",  specialty: "Yoga & Mobility" },
-  { name: "Siddique", role: "CrossFit Coach",   image: "/trainers/siddique.png", specialty: "Strength & Endurance" },
+
+  { name: "Ammu",     role: "Fitness Trainer",  image: "/trainers/ammu.png",     specialty: "Functional & HIIT" },
 ];
 
 function SocialIcons() {
@@ -50,11 +52,11 @@ function TrainerCard({ trainer }) {
             {trainer.name}
           </h3>
           <p className="title-gotham mt-1 text-sm font-medium text-red-600">
-            {trainer.role}
+            Fitness Trainer
           </p>
-          <p className="mt-3 text-sm leading-relaxed text-gray-400">
+          {/* <p className="mt-3 text-sm leading-relaxed text-gray-400">
             {trainer.specialty}
-          </p>
+          </p> */}
         </div>
         <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-red-600 transition-all duration-500 group-hover:w-full" />
       </div>
@@ -179,7 +181,7 @@ export default function TrainersSection() {
   function handleScrollRight() { sliderRef.current.scrollBy({ left:  300, behavior: "smooth" }); }
 
   return (
-    <section id="trainers" className="relative overflow-hidden bg-black py-20 md:py-24">
+    <section id="trainers" className="relative overflow-hidden bg-black py-10 md:py-12">
       <div className="absolute -bottom-40 left-20 w-96 h-96 rounded-full bg-red-600/10 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-5 md:px-8">
@@ -231,9 +233,7 @@ export default function TrainersSection() {
           ))}
         </div>
 
-        <p className="mt-4 text-center text-xs text-white/20 sm:hidden tracking-widest uppercase">
-          ← swipe to explore →
-        </p>
+       
       </div>
     </section>
   );

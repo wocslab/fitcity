@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, ChevronDown } from "lucide-react";
-
 import {
   RiVipCrownLine,
   RiUserStarLine,
@@ -28,7 +27,7 @@ export default function HeroSection({ isLoading = false }) {
     <section
       id="home"
       ref={heroRef}
-      className="relative min-h-[900px] lg:min-h-screen overflow-hidden bg-black"
+      className="relative min-h-[800px] lg:min-h-screen overflow-hidden bg-black"
     >
       {/* ================= BACKGROUND ================= */}
       <div className="absolute inset-0 z-0">
@@ -38,7 +37,7 @@ export default function HeroSection({ isLoading = false }) {
           className="hidden md:block w-full h-full object-cover animate-slowZoom"
         />
         <img
-          src="/mobile.jpeg"
+          src="/bg-mobile.png"
           alt="Gym Hero Mobile"
           className="block md:hidden w-full h-full object-cover object-center"
         />
@@ -47,7 +46,7 @@ export default function HeroSection({ isLoading = false }) {
       </div>
 
       {/* ================= CONTENT ================= */}
-      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-[900px] lg:min-h-screen flex items-end lg:items-start pt-52 lg:pt-[150px] pb-16">
+      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-[800px] lg:min-h-screen flex items-end lg:items-start pt-52 lg:pt-[150px] pb-16">
         <div className="max-w-2xl w-full">
 
           {/* ================= HEADING ================= */}
@@ -60,7 +59,7 @@ export default function HeroSection({ isLoading = false }) {
               YOUR CITY.
             </div>
             <div
-              className={`text-3xl sm:text-5xl lg:text-7xl transition-all duration-500 delay-150 ${
+              className={`text-3xl sm:text-5xl lg:text-7xl  transition-all duration-500 delay-150 ${
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
@@ -110,9 +109,9 @@ export default function HeroSection({ isLoading = false }) {
             </a>
           </div>
 
-          {/* ================= FEATURES ================= */}
+          {/* ================= FEATURES — hidden on mobile ================= */}
           <div
-            className={`grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4 mt-10 md:mt-14 transition-all duration-500 delay-1000 ${
+            className={`hidden sm:grid grid-cols-4 gap-y-8 gap-x-4 mt-10 md:mt-14 transition-all duration-500 delay-1000 ${
               loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
@@ -121,7 +120,7 @@ export default function HeroSection({ isLoading = false }) {
               return (
                 <div
                   key={item.label}
-                  className="flex flex-col items-start text-left sm:items-center sm:text-center group"
+                  className="flex flex-col items-center text-center group"
                 >
                   <div className="flex items-center justify-center text-red-600 text-3xl md:text-4xl transition-all duration-300 group-hover:scale-110">
                     <Icon />
@@ -133,6 +132,7 @@ export default function HeroSection({ isLoading = false }) {
               );
             })}
           </div>
+
         </div>
       </div>
 

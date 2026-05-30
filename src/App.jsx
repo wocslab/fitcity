@@ -10,6 +10,7 @@ import ContactSection from './components/sections/ContactSection';
 import MarqueeTicker from './components/ui/MarqueeTicker';
 import WhatsAppButton from './components/ui/WhatsAppButton';
 import LoadingScreen from './components/ui/LoadingScreen';
+import GallerySection from './components/sections/Gallery';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -73,6 +74,7 @@ function App() {
         <MembershipSection />
         {/* <MarqueeTicker /> */}
         <AboutSection />
+        <GallerySection />
         <ContactSection />
       </main>
       <Footer />
