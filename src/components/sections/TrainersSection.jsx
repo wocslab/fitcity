@@ -192,7 +192,7 @@ export default function TrainersSection() {
               <span className="text-red-600">Our</span> Trainers
             </h2>
           </div>
-          <div className="hidden sm:flex items-center gap-3">
+          {/* <div className="hidden sm:flex items-center gap-3">
             <button
               onClick={handleScrollLeft}
               className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full border border-red-600/30 text-white hover:bg-red-600 hover:border-red-600 transition-all duration-300"
@@ -205,7 +205,7 @@ export default function TrainersSection() {
             >
               <ChevronRight size={20} />
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* SLIDER */}

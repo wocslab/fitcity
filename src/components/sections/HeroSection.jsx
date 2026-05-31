@@ -52,14 +52,14 @@ export default function HeroSection({ isLoading = false }) {
           {/* ================= HEADING ================= */}
           <h1 className="title-gotham uppercase leading-[0.9]">
             <div
-              className={`text-white text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-500 ${
+              className={`text-white text-3xl sm:text-5xl lg:text-7xl  transition-all duration-500 ${
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
               YOUR CITY.
             </div>
             <div
-              className={`text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-500 delay-150 ${
+              className={`text-3xl sm:text-5xl lg:text-7xl  transition-all duration-500 delay-150 ${
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
@@ -67,7 +67,7 @@ export default function HeroSection({ isLoading = false }) {
               <span className="text-red-600">FITNESS.</span>
             </div>
             <div
-              className={`text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-500 delay-300 ${
+              className={`text-3xl sm:text-5xl lg:text-7xl  transition-all duration-500 delay-300 ${
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >

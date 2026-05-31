@@ -135,7 +135,7 @@ export default function GallerySection() {
             <span className="text-red-600">Our</span> Gallery
           </h2>
 
-          <div className="hidden sm:flex items-center gap-3">
+          {/* <div className="hidden sm:flex items-center gap-3">
             <button
               onClick={handleScrollLeft}
               className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/10 bg-[#111] text-white flex items-center justify-center hover:bg-red-600 hover:border-red-600 transition-all duration-300"
@@ -148,7 +148,7 @@ export default function GallerySection() {
             >
               <ChevronRight size={20} />
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* ── IMAGE SLIDER ────────────────────────────────────────── */}
