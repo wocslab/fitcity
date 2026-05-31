@@ -45,6 +45,27 @@ export default function ContactSection() {
   const inputClass =
     "w-full bg-[#222222] text-white text-sm placeholder-gray-500 px-4 py-3 focus:outline-none focus:bg-[#2a2a2a] transition-all duration-200 border-0 rounded-lg";
 
+  const contactItems = [
+    {
+      Icon: Phone,
+      label: "+971 501 69 59 89",
+      href: "tel:+971501695989",
+      normal: true,
+    },
+    {
+      Icon: Mail,
+      label: "fitcityrak@gmail.com",
+      href: "mailto:fitcityrak@gmail.com",
+      normal: true,
+    },
+    {
+      Icon: MapPin,
+      label: "Al Juwais, Nakheel Road Near Nesto Hyper Market, Ras Al Khaimah, UAE",
+      href: "https://maps.app.goo.gl/7n9TisB7qcavNV6T9",
+      normal: true,
+    },
+  ];
+
   return (
     <section id="contact" className="py-24 bg-black relative overflow-hidden">
       <div className="absolute -top-40 right-20 w-96 h-96 rounded-full bg-red-600/5 blur-3xl pointer-events-none" />
@@ -70,34 +91,18 @@ export default function ContactSection() {
             </div>
 
             <div className="space-y-6">
-              {[
-  {
-    Icon: Phone,
-    label: "+971 50 169 5989",
-    href: "tel:+971501695989",
-  },
-  {
-    Icon: Mail,
-    label: "fitcityrak@gmail.com",
-    href: "mailto:fitcityrak@gmail.com",
-  },
-  {
-    Icon: MapPin,
-    label: "Al Juwais, Nakheel Road Near Nesto Hyper Market, Ras Al Khaimah, UAE",
-    href: "https://maps.app.goo.gl/7n9TisB7qcavNV6T9",
-  },
-].map((item) => {
+              {contactItems.map((item) => {
                 const Icon = item.Icon;
                 return (
-                  <a key={item.label} href={item.href} className="flex items-start gap-4 group">
+                  <a key={item.href} href={item.href} className="flex items-start gap-4 group">
                     <div className="w-10 h-10 bg-red-600/10 border border-red-600/20
                       flex items-center justify-center shrink-0
                       group-hover:bg-red-600 group-hover:border-red-600
                       transition-all duration-300">
                       <Icon size={16} className="text-red-500 group-hover:text-white transition-colors duration-300" />
                     </div>
-                    <span className="title-gotham  text-gray-400 text-sm leading-relaxed pt-2
-                      group-hover:text-white transition-colors duration-200">
+                    {/* normal text — no uppercase, preserves email & address casing */}
+                    <span className="text-gray-400 title-sub leading-relaxed pt-2 group-hover:text-white transition-colors duration-200">
                       {item.label}
                     </span>
                   </a>
@@ -174,40 +179,33 @@ export default function ContactSection() {
 
         {/* FULL WIDTH MAP */}
         <div className="relative h-72 sm:h-96 overflow-hidden border border-white/10 rounded-xl">
-  <iframe
-    title="Fit City Gym Location"
-    src="https://www.google.com/maps?q=Al+Juwais+Nakheel+Road+Near+Nesto+Hyper+Market+Ras+Al+Khaimah+UAE&output=embed"
-    width="100%"
-    height="100%"
-    allowFullScreen=""
-    loading="lazy"
-    referrerPolicy="no-referrer-when-downgrade"
-    className="absolute inset-0 w-full h-full"
-    style={{
-      filter:
-        "invert(92%) hue-rotate(180deg) saturate(0.3) brightness(0.6)",
-    }}
-  />
-  <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+          <iframe
+            title="Fit City Gym Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.053335812876!2d55.969285299999996!3d25.7688018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef677136a715d49%3A0x710f5b38024b47ff!2sFIT%20CITY%20GYM!5e0!3m2!1sen!2sin!4v1780210914614!5m2!1sen!2sin"
+            width="100%"
+            height="100%"
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="absolute inset-0 w-full h-full"
+            style={{
+              filter: "invert(92%) hue-rotate(180deg) saturate(0.3) brightness(0.6)",
+            }}
+          />
+          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
-  <div
-    className="absolute bottom-4 left-4 flex items-center gap-3
-    bg-black/85 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 pointer-events-none"
-  >
-    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/20 border border-red-600/30 shrink-0">
-      <MapPin size={15} className="text-red-500" />
-    </div>
-
-    <div>
-      <p className="title-gotham text-white text-xs font-bold">
-        Fit City Gym
-      </p>
-      <p className="title-gotham text-gray-400 text-[10px]">
-        Al Juwais, Nakheel Road, Ras Al Khaimah, UAE
-      </p>
-    </div>
-  </div>
-</div>
+          {/* Pin card */}
+          <div className="absolute bottom-4 left-4 flex items-center gap-3
+            bg-black/85 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 pointer-events-none">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/20 border border-red-600/30 shrink-0">
+              <MapPin size={15} className="text-red-500" />
+            </div>
+            <div>
+              <p className="title-gotham text-white text-xs font-bold">Fit City Gym</p>
+              <p className="text-gray-400 text-[10px]">Al Juwais, Nakheel Road, Ras Al Khaimah, UAE</p>
+            </div>
+          </div>
+        </div>
 
       </div>
     </section>

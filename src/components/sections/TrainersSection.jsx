@@ -12,7 +12,6 @@ const trainers = [
 
   { name: "Akhil",    role: "Strength Coach",   image: "/trainers/akhil.png",    specialty: "Powerlifting & Hypertrophy" },
     { name: "Aswin",    role: "HIIT Specialist",  image: "/trainers/aswin.png",    specialty: "Conditioning & Cardio" },
-  { name: "Rajinas",  role: "Yoga Instructor",  image: "/trainers/rajinas.png",  specialty: "Yoga & Mobility" },
 
   { name: "Ammu",     role: "Fitness Trainer",  image: "/trainers/ammu.png",     specialty: "Functional & HIIT" },
 ];

@@ -27,7 +27,7 @@ export default function HeroSection({ isLoading = false }) {
     <section
       id="home"
       ref={heroRef}
-      className="relative min-h-[800px] lg:min-h-screen overflow-hidden bg-black"
+      className="relative h-[700px] lg:min-h-screen xl:h-[700px] 2xl:h-[700px] 3xl:h-[700px]  overflow-hidden bg-black"
     >
       {/* ================= BACKGROUND ================= */}
       <div className="absolute inset-0 z-0">
@@ -46,20 +46,20 @@ export default function HeroSection({ isLoading = false }) {
       </div>
 
       {/* ================= CONTENT ================= */}
-      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-[800px] lg:min-h-screen flex items-end lg:items-start pt-52 lg:pt-[150px] pb-16">
+      <div className="relative z-20 max-w-7xl mx-auto px-5 md:px-10 min-h-[700px] lg:min-h-screen flex items-end lg:items-start pt-52 lg:pt-[150px] pb-16">
         <div className="max-w-2xl w-full">
 
           {/* ================= HEADING ================= */}
           <h1 className="title-gotham uppercase leading-[0.9]">
             <div
-              className={`text-white text-3xl sm:text-5xl lg:text-7xl  transition-all duration-500 ${
+              className={`text-white text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-500 ${
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
               YOUR CITY.
             </div>
             <div
-              className={`text-3xl sm:text-5xl lg:text-7xl  transition-all duration-500 delay-150 ${
+              className={`text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-500 delay-150 ${
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
@@ -67,7 +67,7 @@ export default function HeroSection({ isLoading = false }) {
               <span className="text-red-600">FITNESS.</span>
             </div>
             <div
-              className={`text-3xl sm:text-5xl lg:text-7xl  transition-all duration-500 delay-300 ${
+              className={`text-3xl sm:text-5xl lg:text-7xl italic transition-all duration-500 delay-300 ${
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >

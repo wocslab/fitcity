@@ -49,7 +49,7 @@ export default function AboutSection() {
           {/* Left: Text */}
           <div className="reveal-left">
             <div className="flex items-center gap-3 mb-6">
-              <span className="w-8 h-px bg-brand-red" />
+              {/* <span className="w-8 h-px bg-brand-red" /> */}
               <span className="title-gotham text-brand-red text-xs font-accent tracking-[0.3em] uppercase">About Us</span>
             </div>
             <h2 className="title-gotham text-5xl font-semibold sm:text-6xl text-white uppercase tracking-wide leading-tight mb-6">
@@ -64,7 +64,7 @@ export default function AboutSection() {
             </p>
             <a
               href="#membership"
-              className="title-gotham group inline-flex items-center gap-3 bg-brand-red text-white px-8 py-4 font-semibold tracking-widest uppercase text-sm hover:bg-brand-red-dark transition-colors duration-300"
+              className="title-gotham group inline-flex  rounded-xl items-center gap-3 bg-brand-red text-white px-8 py-4 font-semibold tracking-widest uppercase text-sm hover:bg-brand-red-dark transition-colors duration-300"
             >
               Get Started
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -73,19 +73,19 @@ export default function AboutSection() {
 
           {/* Right: Photo/Stats */}
           <div className="reveal-right relative">
-            <div className="relative h-[400px] bg-brand-dark-3 border border-white/5 overflow-hidden">
+            <div className="relative h-[400px] bg-brand-dark-3 border rounded-2xl border-white/5 overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
                 alt="Fit City gym interior"
                 className="w-full h-full object-cover opacity-60"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-red/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br rounded-2xl from-brand-red/10 to-transparent" />
               {/* Stat overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-brand-dark to-transparent">
                 <div className="grid grid-cols-3 gap-4">
                   {[
-                    { v: '5+', l: 'Years' },
-                    { v: '1000+', l: 'Members' },
+                    { v: '1+', l: 'Years' },
+                    { v: '1500+', l: 'Members' },
                     { v: '98%', l: 'Satisfaction' },
                   ].map((s) => (
                     <div key={s.l} className="text-center">
@@ -121,15 +121,15 @@ export default function AboutSection() {
           ))}
 
           {/* CTA card */}
-          <div className="reveal group p-6 bg-brand-red relative overflow-hidden card-hover" style={{ transitionDelay: '0.5s' }}>
-            <div className="absolute top-0 right-0 font-display text-8xl text-white/10 leading-none">→</div>
+          <div className="reveal group p-6 bg-brand-red relative overflow-hidden rounded-xl card-hover" style={{ transitionDelay: '0.5s' }}>
+            <div className="absolute top-0 right-0 font-display text-8xl text-white/10 rounded-xl leading-none">→</div>
             <h3 className="title-gotham font-semibold text-white text-xl uppercase tracking-wide mb-2">Ready to Level Up?</h3>
             <p className="text-white/80 text-sm leading-relaxed mb-6">
               Join FitCity Gym and be your best, every day.
             </p>
             <a
               href="#membership"
-              className="title-gotham inline-flex items-center gap-2 border border-white/30 text-white px-5 py-2.5 text-sm font-semibold tracking-widest uppercase hover:bg-white hover:text-brand-red transition-all duration-300"
+              className="title-gotham inline-flex items-center gap-2 border border-white/30 text-white px-5 py-2.5 text-sm font-semibold tracking-widest uppercase hover:bg-white rounded-xl hover:text-brand-red transition-all duration-300"
             >
               Get Started <ArrowRight size={14} />
             </a>

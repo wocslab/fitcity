@@ -11,6 +11,12 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
+.title-sub {
+  font-family: 'Gotham Black', 'Gotham', 'Barlow Condensed', sans-serif;
+  font-weight: 500;
+  /* text-transform: uppercase; */
+  letter-spacing: 0.02em;
+}
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
