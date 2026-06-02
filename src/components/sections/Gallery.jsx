@@ -192,12 +192,11 @@ export default function GallerySection() {
 
         {/* ── VIDEO ROW ───────────────────────────────────────────── */}
         <div
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="100"
-          className="mt-4 relative w-full overflow-hidden rounded-2xl border border-white/5 hover:border-red-600/40 transition-all duration-500"
-          style={{ aspectRatio: "16/7" }}
-        >
+  data-aos="fade-up"
+  data-aos-duration="800"
+  data-aos-delay="100"
+  className="mt-4 relative w-full overflow-hidden rounded-2xl border border-white/5 hover:border-red-600/40 transition-all duration-500 aspect-[16/10] sm:aspect-[16/8] lg:aspect-[16/7]"
+>
           {/* Thumbnail + play button shown before user clicks */}
           {!playing && (
             <div id="video" className="absolute inset-0 z-10 flex items-center justify-center bg-black/40">

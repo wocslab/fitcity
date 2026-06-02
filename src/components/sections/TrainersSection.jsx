@@ -8,12 +8,12 @@ import {
 } from "lucide-react";
 
 const trainers = [
-    { name: "Siddique", role: "CrossFit Coach",   image: "/trainers/siddique.png", specialty: "Strength & Endurance" },
+    { name: "Siddique", role: "CrossFit Coach",   image: "/trainers/siddique.jpeg", specialty: "Strength & Endurance" },
 
-  { name: "Akhil",    role: "Strength Coach",   image: "/trainers/akhil.png",    specialty: "Powerlifting & Hypertrophy" },
-    { name: "Aswin",    role: "HIIT Specialist",  image: "/trainers/aswin.png",    specialty: "Conditioning & Cardio" },
+  { name: "Akhil",    role: "Strength Coach",   image: "/trainers/akhil.jpeg",    specialty: "Powerlifting & Hypertrophy" },
+    { name: "Aswin",    role: "HIIT Specialist",  image: "/trainers/aswin.jpeg",    specialty: "Conditioning & Cardio" },
 
-  { name: "Ammu",     role: "Fitness Trainer",  image: "/trainers/ammu.png",     specialty: "Functional & HIIT" },
+  { name: "Ammu",     role: "Fitness Trainer",  image: "/trainers/ammu.jpeg",     specialty: "Functional & HIIT" },
 ];
 
 function SocialIcons() {

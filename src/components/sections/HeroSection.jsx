@@ -37,7 +37,7 @@ export default function HeroSection({ isLoading = false }) {
           className="hidden md:block w-full h-full object-cover animate-slowZoom"
         />
         <img
-          src="/bg-mobile.png"
+          src="/bg-mobile.jpeg"
           alt="Gym Hero Mobile"
           className="block md:hidden w-full h-full object-cover object-center"
         />

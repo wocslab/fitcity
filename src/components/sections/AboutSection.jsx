@@ -75,11 +75,11 @@ export default function AboutSection() {
           <div className="reveal-right relative">
             <div className="relative h-[400px] bg-brand-dark-3 border rounded-2xl border-white/5 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
+                src="/about.jpeg"
                 alt="Fit City gym interior"
                 className="w-full h-full object-cover opacity-60"
               />
-              <div className="absolute inset-0 bg-gradient-to-br rounded-2xl from-brand-red/10 to-transparent" />
+              {/* <div className="absolute inset-0 bg-gradient-to-br rounded-2xl from-brand-red/10 to-transparent" /> */}
               {/* Stat overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-brand-dark to-transparent">
                 <div className="grid grid-cols-3 gap-4">

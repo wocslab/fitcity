@@ -7,8 +7,8 @@ import {
 
 const programs = [
   { id: 1, title: "Aerobics",            desc: "Boost stamina, improve flexibility and burn calories through energetic cardio-focused sessions.",                    image: "/program/aerobics.png",          icon: RiRunLine },
-  { id: 2, title: "Fitness Program",     desc: "A complete body conditioning program designed to improve strength, endurance and mobility.",                         image: "/program/fitness.png",           icon: RiFlashlightLine },
-  { id: 3, title: "Personal Training",   desc: "Get one-on-one expert guidance with customized workouts tailored to your fitness goals.",                            image: "/program/personal.png",          icon: RiTeamLine },
+  { id: 2, title: "Fitness Program",     desc: "A complete body conditioning program designed to improve strength, endurance and mobility.",                         image: "/program/fitness.jpeg",           icon: RiFlashlightLine },
+  { id: 3, title: "Personal Training",   desc: "Get one-on-one expert guidance with customized workouts tailored to your fitness goals.",                            image: "/program/personal.jpeg",          icon: RiTeamLine },
   { id: 4, title: "Strength Training",   desc: "Build muscle, increase power and develop total-body strength with progressive training plans.",                      image: "/program/strength-training.png", icon: RiBoxingLine },
   { id: 5, title: "Weight Loss & Gain",  desc: "Scientifically designed programs focused on healthy fat loss or effective muscle weight gain.",                      image: "/program/weight-loss.png",       icon: RiFireLine },
   { id: 6, title: "Nutritional Program", desc: "Personalized nutrition guidance and meal planning to support your fitness transformation.",                          image: "/program/nutrition.png",         icon: RiHeartPulseLine },
