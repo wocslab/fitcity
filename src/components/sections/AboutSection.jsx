@@ -86,7 +86,7 @@ export default function AboutSection() {
                   {[
                     { v: '1+', l: 'Years' },
                     { v: '1500+', l: 'Members' },
-                    { v: '98%', l: 'Satisfaction' },
+                    { v: '4.9', l: 'Rating' },
                   ].map((s) => (
                     <div key={s.l} className="text-center">
                       <div className="title-gotham text-brand-red text-2xl">{s.v}</div>

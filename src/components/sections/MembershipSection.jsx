@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, Flame, Users, UserCheck, GraduationCap } from 'lucide-react';
-import { RiMedalLine, RiEyeOffLine, RiPauseLine, RiCloseLine } from 'react-icons/ri';
+import { RiMedalLine, RiEyeOffLine, RiPauseLine, RiFingerprintLine } from 'react-icons/ri';
 
 const WHATSAPP_NUMBER = '971501695989';
 
@@ -28,9 +28,9 @@ const plans = [
     label: 'Students',
     icon: GraduationCap,
     items: [
-      { duration: '1 Month',  price: '111',  bonus: null,             featured: false, popular: false },
-      { duration: '3 Months', price: '333',  bonus: '+1 Month Free',  featured: false, popular: false },
-      { duration: '6 Months', price: '666',  bonus: '+2 Months Free', featured: true,  popular: false },
+      { duration: '1 Month',  price: '111', bonus: null,             featured: false, popular: false },
+      { duration: '3 Months', price: '333', bonus: '+1 Month Free',  featured: false, popular: false },
+      { duration: '6 Months', price: '666', bonus: '+2 Months Free', featured: true,  popular: false },
     ],
   },
   {
@@ -43,11 +43,32 @@ const plans = [
       { duration: '6 Months', price: '1299', bonus: '+1 Month PT',   featured: false, popular: false },
     ],
   },
+  {
+    id: 'PT',
+    label: 'Personal Training',
+    icon: UserCheck,
+    items: [
+      { duration: '1 Month',  price: '799',  bonus: null, featured: false, popular: false },
+      { duration: '2 Months', price: '1499', bonus: null, featured: true,  popular: false },
+      { duration: '3 Months', price: '2099', bonus: null, featured: false, popular: true  },
+    ],
+  },
 ];
 
 export default function MembershipSection() {
   const [activeTab, setActiveTab] = useState('BASIC');
   const activeSection = plans.find((p) => p.id === activeTab);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#pt-plans') {
+        setActiveTab('PT');
+      }
+    };
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   return (
     <section
@@ -69,6 +90,9 @@ export default function MembershipSection() {
             <span className="text-white">Perfect Plan</span>
           </h2>
         </div>
+
+        {/* PT anchor */}
+        <div id="pt-plans" />
 
         {/* TABS */}
         <div className="flex gap-2 sm:gap-3 mb-8 overflow-x-auto pb-1 scrollbar-hide">
@@ -139,7 +163,7 @@ export default function MembershipSection() {
                   {plan.popular && (
                     <span className="title-gotham bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 flex-shrink-0">
                       <Flame size={9} />
-                       Popular
+                      Popular
                     </span>
                   )}
                 </div>
@@ -161,8 +185,8 @@ export default function MembershipSection() {
                   )}
                 </div>
 
-                {/* Button — WhatsApp with plan details */}
-                <a
+                {/* Button */}
+                <a  
                   href={getWhatsappURL(plan, activeSection.label)}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -185,12 +209,12 @@ export default function MembershipSection() {
         </div>
 
         {/* BOTTOM FEATURES */}
-         <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-white/10 pt-8">
+        <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-white/10 pt-8">
           {[
-            { icon: RiMedalLine,   title: 'No Joining Fee'    },
-            { icon: RiEyeOffLine,  title: 'No Hidden Charges' },
-            { icon: RiPauseLine,   title: 'Freeze Anytime'    },
-            { icon: RiCloseLine,   title: 'Cancel Anytime'    },
+            { icon: RiMedalLine,        title: 'No Joining Fee'    },
+            { icon: RiEyeOffLine,       title: 'No Hidden Charges' },
+            { icon: RiPauseLine,        title: 'Freeze Anytime'    },
+            { icon: RiFingerprintLine,  title: 'Biometric Entry'   },
           ].map((item) => {
             const Icon = item.icon;
             return (

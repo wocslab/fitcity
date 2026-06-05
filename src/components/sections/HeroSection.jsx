@@ -94,13 +94,13 @@ export default function HeroSection({ isLoading = false }) {
           >
             <a
               href="#membership"
-              className="title-gotham w-full sm:w-auto flex items-center justify-center px-8 py-3 bg-red-600 hover:bg-red-700 text-white uppercase tracking-widest text-xs md:text-sm font-bold transition-all duration-300 hover:scale-105 shadow-lg shadow-red-600/30"
+              className="title-gotham  rounded-xl w-full sm:w-auto flex items-center justify-center px-8 py-3 bg-red-600 hover:bg-red-700 text-white uppercase tracking-widest text-xs md:text-sm font-bold transition-all duration-300 hover:scale-105 shadow-lg shadow-red-600/30"
             >
               Join Fit City
             </a>
             <a
               href="#video"
-              className="title-gotham w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3 border border-white/20 hover:border-red-600 text-white uppercase tracking-widest text-xs md:text-sm font-bold transition-all duration-300 hover:bg-white/5"
+              className="title-gotham w-full rounded-xl sm:w-auto flex items-center justify-center gap-3 px-8 py-3 border border-white/20 hover:border-red-600 text-white uppercase tracking-widest text-xs md:text-sm font-bold transition-all duration-300 hover:bg-white/5"
             >
               <span className="w-8 h-8 rounded-full border border-red-600 flex items-center justify-center text-red-600">
                 <Play size={12} fill="currentColor" />

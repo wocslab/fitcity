@@ -1,3 +1,5 @@
+import { RiInstagramLine } from "react-icons/ri";
+
 export default function Footer() {
   return (
     <footer className="bg-black border-t border-white/5">
@@ -6,6 +8,16 @@ export default function Footer() {
           <p className="text-gray-500 text-xs">
             © 2026 Fit City Gym. All rights reserved.
           </p>
+
+          <a
+            href="https://www.instagram.com/fitcity.rak?igsh=MWZnajNxdWo2dGwycw=="
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-gray-500 text-xs hover:text-red-500 transition-colors duration-300 group"
+          >
+            <RiInstagramLine className="text-base group-hover:text-red-500 transition-colors duration-300" />
+            @fitcity.rak
+          </a>
 
           <p className="text-gray-500 text-xs">
             Privacy Policy · Terms of Service

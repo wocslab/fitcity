@@ -63,14 +63,14 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               <a
                 href="#membership"
-                className="title-gotham hidden lg:inline-flex items-center px-6 py-2.5 border-2 border-red-600 text-white text-sm font-semibold tracking-widest uppercase hover:bg-red-600 transition-colors duration-200"
+                className="title-gotham hidden lg:inline-flex rounded-xl items-center px-6 py-2.5 border-2 border-red-600 text-white text-sm font-semibold tracking-widest uppercase hover:bg-red-600 transition-colors duration-200"
               >
                 Join Now
               </a>
 
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="lg:hidden text-white p-2"
+                className="lg:hidden text-white rounded-xl  p-2"
                 aria-label="Toggle menu"
               >
                 {menuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -101,7 +101,7 @@ export default function Navbar() {
           <a
             href="#membership"
             onClick={() => setMenuOpen(false)}
-            className="title-gotham mt-8 text-center py-4 bg-red-600 text-white text-xl tracking-widest uppercase"
+            className="title-gotham  rounded-xl mt-8 text-center py-4 bg-red-600 text-white text-xl tracking-widest uppercase"
           >
             Join Now
           </a>

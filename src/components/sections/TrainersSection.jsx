@@ -44,7 +44,7 @@ function TrainerCard({ trainer }) {
             className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70" />
-          <SocialIcons />
+          {/* <SocialIcons /> */}
         </div>
         <div className="p-5">
           <h3 className="title-gotham text-xl font-bold uppercase tracking-wide text-white">

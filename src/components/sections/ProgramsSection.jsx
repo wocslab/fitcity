@@ -6,19 +6,18 @@ import {
 } from "react-icons/ri";
 
 const programs = [
-  { id: 1, title: "Aerobics",            desc: "Boost stamina, improve flexibility and burn calories through energetic cardio-focused sessions.",                    image: "/program/aerobics.png",          icon: RiRunLine },
-  { id: 2, title: "Fitness Program",     desc: "A complete body conditioning program designed to improve strength, endurance and mobility.",                         image: "/program/fitness.jpeg",           icon: RiFlashlightLine },
-  { id: 3, title: "Personal Training",   desc: "Get one-on-one expert guidance with customized workouts tailored to your fitness goals.",                            image: "/program/personal.jpeg",          icon: RiTeamLine },
-  { id: 4, title: "Strength Training",   desc: "Build muscle, increase power and develop total-body strength with progressive training plans.",                      image: "/program/strength-training.png", icon: RiBoxingLine },
-  { id: 5, title: "Weight Loss & Gain",  desc: "Scientifically designed programs focused on healthy fat loss or effective muscle weight gain.",                      image: "/program/weight-loss.png",       icon: RiFireLine },
-  { id: 6, title: "Nutritional Program", desc: "Personalized nutrition guidance and meal planning to support your fitness transformation.",                          image: "/program/nutrition.png",         icon: RiHeartPulseLine },
+  { id: 1, title: "Aerobics",            desc: "Boost stamina, improve flexibility and burn calories through energetic cardio-focused sessions.",                    image: "/program/aerobics.png",          icon: RiRunLine,       link: "#membership" },
+  { id: 2, title: "Fitness Program",     desc: "A complete body conditioning program designed to improve strength, endurance and mobility.",                         image: "/program/fitness.jpeg",          icon: RiFlashlightLine, link: "#membership" },
+  { id: 3, title: "Personal Training",   desc: "Get one-on-one expert guidance with customized workouts tailored to your fitness goals.",                            image: "/program/personal.jpeg",         icon: RiTeamLine,       link: "#pt-plans"   },
+  { id: 4, title: "Strength Training",   desc: "Build muscle, increase power and develop total-body strength with progressive training plans.",                      image: "/program/strength-training.png", icon: RiBoxingLine,     link: "#membership" },
+  { id: 5, title: "Weight Loss & Gain",  desc: "Scientifically designed programs focused on healthy fat loss or effective muscle weight gain.",                      image: "/program/weight-loss.png",       icon: RiFireLine,       link: "#membership" },
+  { id: 6, title: "Nutritional Program", desc: "Personalized nutrition guidance and meal planning to support your fitness transformation.",                          image: "/program/nutrition.png",         icon: RiHeartPulseLine, link: "#membership" },
 ];
 
 export default function ProgramsSection() {
   const sliderRef = useRef(null);
   const [dragging, setDragging] = useState(false);
 
-  // ── Desktop pointer drag ──────────────────────────────────────────
   const isPointerDragging  = useRef(false);
   const pointerStartX      = useRef(0);
   const pointerScrollStart = useRef(0);
@@ -51,7 +50,6 @@ export default function ProgramsSection() {
     sliderRef.current.scrollBy({ left: -pointerVelocity.current * 4, behavior: "smooth" });
   };
 
-  // ── Touch with velocity + rAF momentum ───────────────────────────
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
@@ -178,7 +176,8 @@ export default function ProgramsSection() {
                     draggable={false}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{ background: "radial-gradient(circle at top, rgba(220,38,38,0.18), transparent 65%)" }}
                   />
                   <div className="absolute bottom-5 left-5 flex h-14 w-14 items-center justify-center
@@ -196,7 +195,7 @@ export default function ProgramsSection() {
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-gray-400">{program.desc}</p>
                   <a
-                    href="#"
+                    href={program.link}
                     className="title-gotham mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-red-500 transition-all duration-300 hover:gap-3"
                   >
                     Learn More
