@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function ContactSection() {
   const [form, setForm] = useState({ firstName: "", email: "", phone: "", message: "" });
   const [status, setStatus] = useState("idle");
+  const { t } = useLanguage();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,24 +48,9 @@ export default function ContactSection() {
     "w-full bg-[#222222] text-white text-sm placeholder-gray-500 px-4 py-3 focus:outline-none focus:bg-[#2a2a2a] transition-all duration-200 border-0 rounded-lg";
 
   const contactItems = [
-    {
-      Icon: Phone,
-      label: "+971 501 69 59 89",
-      href: "tel:+971501695989",
-      normal: true,
-    },
-    {
-      Icon: Mail,
-      label: "fitcityrak@gmail.com",
-      href: "mailto:fitcityrak@gmail.com",
-      normal: true,
-    },
-    {
-      Icon: MapPin,
-      label: "Al Juwais, Nakheel Road Near Nesto Hyper Market, Ras Al Khaimah, UAE",
-      href: "https://maps.app.goo.gl/7n9TisB7qcavNV6T9",
-      normal: true,
-    },
+    { Icon: Phone,  label: "+971 501 69 59 89",  href: "tel:+971501695989" },
+    { Icon: Mail,   label: "fitcityrak@gmail.com", href: "mailto:fitcityrak@gmail.com" },
+    { Icon: MapPin, label: "Al Juwais, Nakheel Road Near Nesto Hyper Market, Ras Al Khaimah, UAE", href: "https://maps.app.goo.gl/7n9TisB7qcavNV6T9" },
   ];
 
   return (
@@ -81,12 +68,12 @@ export default function ContactSection() {
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-10 h-px bg-red-600 rounded-full" />
                 <span className="title-gotham text-red-500 text-xs font-semibold tracking-[0.3em] uppercase">
-                  Get In Touch
+                  {t('contact', 'label')}
                 </span>
               </div>
               <h2 className="title-gotham text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-white">
-                We'd Love to Hear{" "}
-                <span className="text-red-500">From You</span>
+                {t('contact', 'heading')}{" "}
+                <span className="text-red-500">{t('contact', 'headingAccent')}</span>
               </h2>
             </div>
 
@@ -101,7 +88,6 @@ export default function ContactSection() {
                       transition-all duration-300">
                       <Icon size={16} className="text-red-500 group-hover:text-white transition-colors duration-300" />
                     </div>
-                    {/* normal text — no uppercase, preserves email & address casing */}
                     <span className="text-gray-400 title-sub leading-relaxed pt-2 group-hover:text-white transition-colors duration-200">
                       {item.label}
                     </span>
@@ -117,7 +103,7 @@ export default function ContactSection() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[8px]">
                 <input
                   type="text"
-                  placeholder="Your Name"
+                  placeholder={t('contact', 'namePlaceholder')}
                   value={form.firstName}
                   onChange={(e) => setForm({ ...form, firstName: e.target.value })}
                   required
@@ -125,7 +111,7 @@ export default function ContactSection() {
                 />
                 <input
                   type="email"
-                  placeholder="Your Email"
+                  placeholder={t('contact', 'emailPlaceholder')}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   required
@@ -134,14 +120,14 @@ export default function ContactSection() {
               </div>
               <input
                 type="tel"
-                placeholder="Phone Number"
+                placeholder={t('contact', 'phonePlaceholder')}
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 required
                 className={inputClass}
               />
               <textarea
-                placeholder="Message"
+                placeholder={t('contact', 'messagePlaceholder')}
                 rows={4}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -168,10 +154,10 @@ export default function ContactSection() {
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                   </svg>
                 )}
-                {status === "idle"    && <><Send size={14} /> Send Message</>}
-                {status === "loading" && "Sending..."}
-                {status === "success" && "✓ Message Sent!"}
-                {status === "error"   && "Failed — Try Again"}
+                {status === "idle"    && <><Send size={14} /> {t('contact', 'send')}</>}
+                {status === "loading" && t('contact', 'sending')}
+                {status === "success" && t('contact', 'success')}
+                {status === "error"   && t('contact', 'error')}
               </button>
             </form>
           </div>
@@ -188,21 +174,19 @@ export default function ContactSection() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="absolute inset-0 w-full h-full"
-            style={{
-              filter: "invert(92%) hue-rotate(180deg) saturate(0.3) brightness(0.6)",
-            }}
+            style={{ filter: "invert(92%) hue-rotate(180deg) saturate(0.3) brightness(0.6)" }}
           />
           <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
           {/* Pin card */}
-          <div className="absolute bottom-4 left-4 flex items-center gap-3
+          <div className="absolute bottom-4 left-4 rtl:left-auto rtl:right-4 flex items-center gap-3
             bg-black/85 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 pointer-events-none">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/20 border border-red-600/30 shrink-0">
               <MapPin size={15} className="text-red-500" />
             </div>
             <div>
-              <p className="title-gotham text-white text-xs font-bold">Fit City Gym</p>
-              <p className="text-gray-400 text-[10px]">Al Juwais, Nakheel Road, Ras Al Khaimah, UAE</p>
+              <p className="title-gotham text-white text-xs font-bold">{t('contact', 'pinName')}</p>
+              <p className="text-gray-400 text-[10px]">{t('contact', 'pinAddress')}</p>
             </div>
           </div>
         </div>

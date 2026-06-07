@@ -1,12 +1,15 @@
 import { RiInstagramLine } from "react-icons/ri";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-black border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-xs">
-            © 2026 Fit City Gym. All rights reserved.
+            {t('footer', 'copyright')}
           </p>
 
           <a
@@ -20,7 +23,7 @@ export default function Footer() {
           </a>
 
           <p className="text-gray-500 text-xs">
-            Privacy Policy · Terms of Service
+            {t('footer', 'privacy')}
           </p>
         </div>
       </div>
