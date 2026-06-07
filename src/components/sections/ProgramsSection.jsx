@@ -4,19 +4,23 @@ import {
   RiBoxingLine, RiFlashlightLine, RiTeamLine,
   RiHeartPulseLine, RiFireLine, RiRunLine,
 } from "react-icons/ri";
+import { useLanguage } from "../../context/LanguageContext";
 
-const programs = [
-  { id: 1, title: "Aerobics",            desc: "Boost stamina, improve flexibility and burn calories through energetic cardio-focused sessions.",                    image: "/program/aerobics.png",          icon: RiRunLine,       link: "#membership" },
-  { id: 2, title: "Fitness Program",     desc: "A complete body conditioning program designed to improve strength, endurance and mobility.",                         image: "/program/fitness.jpeg",          icon: RiFlashlightLine, link: "#membership" },
-  { id: 3, title: "Personal Training",   desc: "Get one-on-one expert guidance with customized workouts tailored to your fitness goals.",                            image: "/program/personal.jpeg",         icon: RiTeamLine,       link: "#pt-plans"   },
-  { id: 4, title: "Strength Training",   desc: "Build muscle, increase power and develop total-body strength with progressive training plans.",                      image: "/program/strength-training.png", icon: RiBoxingLine,     link: "#membership" },
-  { id: 5, title: "Weight Loss & Gain",  desc: "Scientifically designed programs focused on healthy fat loss or effective muscle weight gain.",                      image: "/program/weight-loss.png",       icon: RiFireLine,       link: "#membership" },
-  { id: 6, title: "Nutritional Program", desc: "Personalized nutrition guidance and meal planning to support your fitness transformation.",                          image: "/program/nutrition.png",         icon: RiHeartPulseLine, link: "#membership" },
+const programIcons = [RiRunLine, RiFlashlightLine, RiTeamLine, RiBoxingLine, RiFireLine, RiHeartPulseLine];
+const programLinks = ['#membership', '#membership', '#pt-plans', '#membership', '#membership', '#membership'];
+const programImages = [
+  '/program/aerobics.png',
+  '/program/fitness.jpeg',
+  '/program/personal.jpeg',
+  '/program/strength-training.png',
+  '/program/weight-loss.png',
+  '/program/nutrition.png',
 ];
 
 export default function ProgramsSection() {
   const sliderRef = useRef(null);
   const [dragging, setDragging] = useState(false);
+  const { t, lang } = useLanguage();
 
   const isPointerDragging  = useRef(false);
   const pointerStartX      = useRef(0);
@@ -105,6 +109,10 @@ export default function ProgramsSection() {
     };
   }, []);
 
+  const programs = t('programs', 'items');
+  const headingAccent = t('programs', 'headingAccent');
+  const heading = t('programs', 'heading');
+
   return (
     <section id="programs" className="relative overflow-hidden bg-black py-10 md:py-16">
       <div className="absolute -bottom-40 left-20 w-96 h-96 rounded-full bg-red-600/10 blur-3xl pointer-events-none" />
@@ -113,12 +121,8 @@ export default function ProgramsSection() {
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-10 md:mb-14">
-          <span
-            data-aos="fade-right"
-            data-aos-duration="700"
-            className="title-gotham uppercase text-white font-bold text-2xl sm:text-3xl"
-          >
-            <span className="text-red-600">Our</span> Programs
+          <span className="title-gotham uppercase text-white font-bold text-2xl sm:text-3xl">
+            <span className="text-red-600">{headingAccent}</span>{heading ? ` ${heading}` : ''}
           </span>
 
           <div className="hidden sm:flex items-center gap-3">
@@ -155,22 +159,18 @@ export default function ProgramsSection() {
           className="flex gap-6 pb-4 select-none [&::-webkit-scrollbar]:hidden"
         >
           {programs.map((program, i) => {
-            const Icon = program.icon;
+            const Icon = programIcons[i];
             return (
               <div
-                key={program.id}
-                data-aos="fade-up"
-                data-aos-duration="700"
-                data-aos-delay={i * 80}
+                key={i}
                 className="group relative flex-shrink-0 w-[80vw] sm:w-[320px] lg:w-[350px]
                   overflow-hidden rounded-2xl border border-white/5 bg-[#0f0f0f]
                   hover:border-red-600/40 hover:shadow-[0_0_35px_rgba(220,38,38,0.2)]
                   hover:-translate-y-2 transition-all duration-500"
               >
-                {/* IMAGE */}
                 <div className="relative h-72 overflow-hidden">
                   <img
-                    src={program.image}
+                    src={programImages[i]}
                     alt={program.title}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     draggable={false}
@@ -180,7 +180,7 @@ export default function ProgramsSection() {
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{ background: "radial-gradient(circle at top, rgba(220,38,38,0.18), transparent 65%)" }}
                   />
-                  <div className="absolute bottom-5 left-5 flex h-14 w-14 items-center justify-center
+                  <div className="absolute bottom-5 left-5 rtl:left-auto rtl:right-5 flex h-14 w-14 items-center justify-center
                     rounded-2xl border border-red-600/30 bg-black/70 backdrop-blur-md
                     transition-all duration-500 group-hover:bg-red-600 group-hover:scale-110 group-hover:rotate-3"
                   >
@@ -188,22 +188,20 @@ export default function ProgramsSection() {
                   </div>
                 </div>
 
-                {/* CONTENT */}
                 <div className="relative z-10 p-6">
                   <h3 className="title-gotham text-xl font-bold uppercase tracking-wide text-white transition-colors duration-300 group-hover:text-red-500">
                     {program.title}
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-gray-400">{program.desc}</p>
                   <a
-                    href={program.link}
+                    href={programLinks[i]}
                     className="title-gotham mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-red-500 transition-all duration-300 hover:gap-3"
                   >
-                    Learn More
-                    <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    {t('programs', 'learnMore')}
+                    <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180" />
                   </a>
                 </div>
 
-                {/* Bottom Border */}
                 <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-red-600 transition-all duration-500 group-hover:w-full" />
               </div>
             );

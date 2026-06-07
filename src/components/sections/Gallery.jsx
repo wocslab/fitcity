@@ -1,14 +1,14 @@
 import { useRef, useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { Play } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
-const images = [
-  { src: "/gallery/1.jpeg", alt: "Gym Floor" },
-  { src: "/gallery/2.jpeg", alt: "Weight Area" },
-  { src: "/gallery/3.jpeg", alt: "Cardio Zone" },
-  { src: "/gallery/4.jpeg", alt: "Training Session" },
+const imageSrcs = [
+  "/gallery/1.jpeg",
+  "/gallery/2.jpeg",
+  "/gallery/3.jpeg",
+  "/gallery/4.jpeg",
 ];
 
-// ── Replace with your actual video file path or YouTube/Vimeo embed URL ──
 const VIDEO_SRC = "/v.mp4";
 
 export default function GallerySection() {
@@ -17,8 +17,8 @@ export default function GallerySection() {
   const [dragging, setDragging]       = useState(false);
   const [playing, setPlaying]         = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const { t } = useLanguage();
 
-  // ── Desktop pointer drag ──────────────────────────────────────────
   const isPointerDragging  = useRef(false);
   const pointerStartX      = useRef(0);
   const pointerScrollStart = useRef(0);
@@ -48,7 +48,6 @@ export default function GallerySection() {
     sliderRef.current.scrollBy({ left: -pointerVelocity.current * 4, behavior: "smooth" });
   }
 
-  // ── Touch with velocity + rAF momentum ───────────────────────────
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
@@ -104,20 +103,19 @@ export default function GallerySection() {
     };
   }, []);
 
-  function handleScrollLeft()  { sliderRef.current.scrollBy({ left: -420, behavior: "smooth" }); }
-  function handleScrollRight() { sliderRef.current.scrollBy({ left:  420, behavior: "smooth" }); }
-
   function handlePlay() {
     setPlaying(true);
-    // Load video only when user clicks play (lazy load)
     setVideoLoaded(true);
     setTimeout(() => videoRef.current?.play(), 50);
   }
 
+  const alts = t('gallery', 'alts');
+  const headingAccent = t('gallery', 'headingAccent');
+  const heading = t('gallery', 'heading');
+
   return (
     <section id="gallery" className="relative overflow-hidden pt-16 md:py-20 bg-black">
 
-      {/* bg glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,0,0,0.15),transparent_40%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.95))]" />
@@ -125,33 +123,14 @@ export default function GallerySection() {
 
       <div className="max-w-7xl mx-auto px-5 md:px-8">
 
-        {/* ── HEADER ─────────────────────────────────────────────── */}
+        {/* HEADER */}
         <div className="flex items-center justify-between mb-10">
-          <h2
-            data-aos="fade-right"
-            data-aos-duration="700"
-            className="title-gotham uppercase text-white font-bold text-2xl sm:text-3xl"
-          >
-            <span className="text-red-600">Our</span> Gallery
+          <h2 className="title-gotham uppercase text-white font-bold text-2xl sm:text-3xl">
+            <span className="text-red-600">{headingAccent}</span>{heading ? ` ${heading}` : ''}
           </h2>
-
-          {/* <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={handleScrollLeft}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/10 bg-[#111] text-white flex items-center justify-center hover:bg-red-600 hover:border-red-600 transition-all duration-300"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={handleScrollRight}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/10 bg-[#111] text-white flex items-center justify-center hover:bg-red-600 hover:border-red-600 transition-all duration-300"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div> */}
         </div>
 
-        {/* ── IMAGE SLIDER ────────────────────────────────────────── */}
+        {/* IMAGE SLIDER */}
         <div
           ref={sliderRef}
           onPointerDown={handlePointerDown}
@@ -168,17 +147,14 @@ export default function GallerySection() {
           }}
           className="flex gap-4 pb-2 select-none [&::-webkit-scrollbar]:hidden"
         >
-          {images.map((img, i) => (
+          {imageSrcs.map((src, i) => (
             <div
               key={i}
-              data-aos="fade-up"
-              data-aos-duration="700"
-              data-aos-delay={i * 80}
               className="group relative flex-shrink-0 overflow-hidden rounded-2xl border border-white/5 hover:border-red-600/40 transition-all duration-500 w-[80vw] sm:w-[340px] lg:w-[calc(25%-12px)] h-64 sm:h-80"
             >
               <img
-                src={img.src}
-                alt={img.alt}
+                src={src}
+                alt={alts[i]}
                 draggable={false}
                 loading="lazy"
                 decoding="async"
@@ -190,17 +166,12 @@ export default function GallerySection() {
           ))}
         </div>
 
-        {/* ── VIDEO ROW ───────────────────────────────────────────── */}
+        {/* VIDEO */}
         <div
-  data-aos="fade-up"
-  data-aos-duration="800"
-  data-aos-delay="100"
-  className="mt-4 relative w-full overflow-hidden rounded-2xl border border-white/5 hover:border-red-600/40 transition-all duration-500 aspect-[16/10] sm:aspect-[16/8] lg:aspect-[16/7]"
->
-          {/* Thumbnail + play button shown before user clicks */}
+          className="mt-4 relative w-full overflow-hidden rounded-2xl border border-white/5 hover:border-red-600/40 transition-all duration-500 aspect-[16/10] sm:aspect-[16/8] lg:aspect-[16/7]"
+        >
           {!playing && (
             <div id="video" className="absolute inset-0 z-10 flex items-center justify-center bg-black/40">
-              {/* Poster image — replace with your own thumbnail */}
               <img
                 src="/thump.png"
                 alt="Gym video thumbnail"
@@ -219,7 +190,6 @@ export default function GallerySection() {
             </div>
           )}
 
-          {/* Video — only loaded after play clicked (lazy) */}
           {videoLoaded && (
             <video
               ref={videoRef}

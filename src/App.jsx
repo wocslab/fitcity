@@ -11,11 +11,13 @@ import MarqueeTicker from './components/ui/MarqueeTicker';
 import WhatsAppButton from './components/ui/WhatsAppButton';
 import LoadingScreen from './components/ui/LoadingScreen';
 import GallerySection from './components/sections/Gallery';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
-function App() {
+function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
+  const { lang } = useLanguage();
+  const isRTL = lang === 'ar';
 
-  // Initialize scroll reveal observer (only after loading is done)
   useEffect(() => {
     if (isLoading) return;
 
@@ -36,7 +38,6 @@ function App() {
     return () => observer.disconnect();
   }, [isLoading]);
 
-  // Re-run reveal on route changes / dynamic content
   useEffect(() => {
     if (isLoading) return;
 
@@ -61,8 +62,10 @@ function App() {
   }, [isLoading]);
 
   return (
-    <div className="min-h-screen bg-brand-dark text-white">
-      {/* Loading screen — renders on top, self-removes after animation */}
+    <div
+      dir={isRTL ? 'rtl' : 'ltr'}
+      className={`min-h-screen bg-brand-dark text-white${isRTL ? ' lang-ar' : ''}`}
+    >
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
       <Navbar />
@@ -80,6 +83,14 @@ function App() {
       <Footer />
       <WhatsAppButton />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

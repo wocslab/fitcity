@@ -1,38 +1,14 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  Instagram,
-  Facebook,
-  Twitter,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 const trainers = [
-    { name: "Siddique", role: "CrossFit Coach",   image: "/trainers/siddique.jpeg", specialty: "Strength & Endurance" },
-
-  { name: "Akhil",    role: "Strength Coach",   image: "/trainers/akhil.jpeg",    specialty: "Powerlifting & Hypertrophy" },
-    { name: "Aswin",    role: "HIIT Specialist",  image: "/trainers/aswin.jpeg",    specialty: "Conditioning & Cardio" },
-
-  { name: "Ammu",     role: "Fitness Trainer",  image: "/trainers/ammu.jpeg",     specialty: "Functional & HIIT" },
+  { name: "Siddique", image: "/trainers/siddique.jpeg" },
+  { name: "Akhil",    image: "/trainers/akhil.jpeg"    },
+  { name: "Aswin",    image: "/trainers/aswin.jpeg"    },
+  { name: "Ammu",     image: "/trainers/ammu.jpeg"     },
 ];
 
-function SocialIcons() {
-  return (
-    <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 translate-x-5 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">
-      <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-white transition-all duration-300 hover:scale-110 hover:bg-red-700">
-        <Instagram size={15} />
-      </a>
-      <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-white transition-all duration-300 hover:scale-110 hover:bg-red-700">
-        <Facebook size={15} />
-      </a>
-      <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-white transition-all duration-300 hover:scale-110 hover:bg-red-700">
-        <Twitter size={15} />
-      </a>
-    </div>
-  );
-}
-
-function TrainerCard({ trainer }) {
+function TrainerCard({ trainer, role }) {
   return (
     <div className="flex-shrink-0 w-[80vw] sm:w-[260px] lg:w-[calc(25%-15px)]">
       <div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111] transition-all duration-500 hover:-translate-y-2 hover:border-red-600/40 hover:shadow-[0_0_35px_rgba(220,38,38,0.18)]">
@@ -44,18 +20,14 @@ function TrainerCard({ trainer }) {
             className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70" />
-          {/* <SocialIcons /> */}
         </div>
         <div className="p-5">
           <h3 className="title-gotham text-xl font-bold uppercase tracking-wide text-white">
             {trainer.name}
           </h3>
           <p className="title-gotham mt-1 text-sm font-medium text-red-600">
-            Fitness Trainer
+            {role}
           </p>
-          {/* <p className="mt-3 text-sm leading-relaxed text-gray-400">
-            {trainer.specialty}
-          </p> */}
         </div>
         <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-red-600 transition-all duration-500 group-hover:w-full" />
       </div>
@@ -66,8 +38,8 @@ function TrainerCard({ trainer }) {
 export default function TrainersSection() {
   const sliderRef   = useRef(null);
   const [dragging, setDragging] = useState(false);
+  const { t } = useLanguage();
 
-  // ── Desktop pointer drag ──────────────────────────────────────────
   const isPointerDragging = useRef(false);
   const pointerStartX     = useRef(0);
   const pointerScrollStart = useRef(0);
@@ -97,27 +69,16 @@ export default function TrainersSection() {
     sliderRef.current.scrollBy({ left: -pointerVelocity.current * 4, behavior: "smooth" });
   }
 
-  // ── Touch handling ────────────────────────────────────────────────
-  // Attached via useEffect with { passive: false } so e.preventDefault()
-  // actually works (React synthetic handlers are always passive).
-  // Includes velocity tracking + momentum flick on touchend.
   useEffect(() => {
     const el = sliderRef.current;
     if (!el) return;
 
-    let startX       = 0;
-    let startY       = 0;
-    let scrollLeft   = 0;
-    let lastX        = 0;
-    let lastTime     = 0;
-    let velocity     = 0;
-    let isHoriz      = null;  // direction locked on first move
-    let rafId        = null;
+    let startX = 0, startY = 0, scrollLeft = 0;
+    let lastX = 0, lastTime = 0, velocity = 0;
+    let isHoriz = null, rafId = null;
 
     const onTouchStart = (e) => {
-      // cancel any ongoing momentum
       if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-
       startX     = e.touches[0].clientX;
       startY     = e.touches[0].clientY;
       scrollLeft = el.scrollLeft;
@@ -126,39 +87,27 @@ export default function TrainersSection() {
       velocity   = 0;
       isHoriz    = null;
     };
-
     const onTouchMove = (e) => {
       const dx = e.touches[0].clientX - startX;
       const dy = e.touches[0].clientY - startY;
-
-      // Lock direction on first significant move
       if (isHoriz === null && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
         isHoriz = Math.abs(dx) >= Math.abs(dy);
       }
-      if (!isHoriz) return; // vertical — let page scroll naturally
-
-      e.preventDefault(); // block page scroll while swiping slider
-
-      // Track velocity (px/ms) using last two frames
+      if (!isHoriz) return;
+      e.preventDefault();
       const now = Date.now();
-      const dt  = now - lastTime || 1;
-      velocity  = (e.touches[0].clientX - lastX) / dt;
+      velocity  = (e.touches[0].clientX - lastX) / (now - lastTime || 1);
       lastX     = e.touches[0].clientX;
       lastTime  = now;
-
       el.scrollLeft = scrollLeft - dx;
     };
-
     const onTouchEnd = () => {
       if (!isHoriz) return;
-
-      // Momentum: decay velocity with rAF for buttery feel
-      let v = velocity * 16; // scale to px/frame (~16ms)
-
+      let v = velocity * 16;
       const momentum = () => {
         if (Math.abs(v) < 0.5) return;
         el.scrollLeft -= v;
-        v *= 0.92; // friction factor — tune between 0.88 (fast stop) and 0.95 (long glide)
+        v *= 0.92;
         rafId = requestAnimationFrame(momentum);
       };
       rafId = requestAnimationFrame(momentum);
@@ -176,8 +125,9 @@ export default function TrainersSection() {
     };
   }, []);
 
-  function handleScrollLeft()  { sliderRef.current.scrollBy({ left: -300, behavior: "smooth" }); }
-  function handleScrollRight() { sliderRef.current.scrollBy({ left:  300, behavior: "smooth" }); }
+  const headingAccent = t('trainers', 'headingAccent');
+  const heading = t('trainers', 'heading');
+  const role = t('trainers', 'role');
 
   return (
     <section id="trainers" className="relative overflow-hidden bg-black py-10 md:py-12">
@@ -189,23 +139,9 @@ export default function TrainersSection() {
         <div className="mb-10 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h2 className="title-gotham uppercase text-white font-semibold text-2xl sm:text-3xl">
-              <span className="text-red-600">Our</span> Trainers
+              <span className="text-red-600">{headingAccent}</span>{heading ? ` ${heading}` : ''}
             </h2>
           </div>
-          {/* <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={handleScrollLeft}
-              className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full border border-red-600/30 text-white hover:bg-red-600 hover:border-red-600 transition-all duration-300"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={handleScrollRight}
-              className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full border border-red-600/30 text-white hover:bg-red-600 hover:border-red-600 transition-all duration-300"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div> */}
         </div>
 
         {/* SLIDER */}
@@ -221,18 +157,14 @@ export default function TrainersSection() {
             overflowY: "hidden",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
-            // Disable browser's own touch-scroll on this element so our
-            // JS momentum takes over; vertical scroll still works on the page
             touchAction: "pan-y",
           }}
           className="flex gap-5 pb-4 select-none [&::-webkit-scrollbar]:hidden"
         >
           {trainers.map((trainer, i) => (
-            <TrainerCard key={i} trainer={trainer} />
+            <TrainerCard key={i} trainer={trainer} role={role} />
           ))}
         </div>
-
-       
       </div>
     </section>
   );

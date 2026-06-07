@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@400;500;600;700&family=Cairo:wght@400;600;700;900&display=swap');
 @import url('https://fonts.cdnfonts.com/css/gotham');
 
 @tailwind base;
@@ -16,6 +16,21 @@
   font-weight: 500;
   /* text-transform: uppercase; */
   letter-spacing: 0.02em;
+}
+
+/* Arabic locale overrides */
+.lang-ar,
+.lang-ar .title-gotham,
+.lang-ar .title-sub,
+.lang-ar input,
+.lang-ar textarea,
+.lang-ar button {
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: 0;
+}
+
+.lang-ar .title-gotham {
+  text-transform: none;
 }
 
 .no-scrollbar::-webkit-scrollbar {
