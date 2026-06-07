@@ -72,8 +72,8 @@ export default function AboutSection() {
                 </div>
               </div>
             </div>
-            <div className="absolute -top-4 -right-4 rtl:-right-auto rtl:-left-4 w-24 h-24 border-t-2 border-r-2 rtl:border-r-0 rtl:border-l-2 border-brand-red" />
-            <div className="absolute -bottom-4 -left-4 rtl:-left-auto rtl:-right-4 w-24 h-24 border-b-2 border-l-2 rtl:border-l-0 rtl:border-r-2 border-brand-red" />
+            <div className="absolute -top-4 ltr:-right-4 rtl:-left-4 w-24 h-24 border-t-2 ltr:border-r-2 rtl:border-l-2 border-brand-red ltr:rounded-tr-2xl rtl:rounded-tl-2xl" />
+            <div className="absolute -bottom-4 ltr:-left-4 rtl:-right-4 w-24 h-24 border-b-2 ltr:border-l-2 rtl:border-r-2 border-brand-red ltr:rounded-bl-2xl rtl:rounded-br-2xl" />
           </div>
         </div>
 
@@ -83,7 +83,7 @@ export default function AboutSection() {
             const Icon = featureIcons[i];
             return (
               <div
-                key={feature.title}
+                key={i}
                 className="reveal group p-6 border-2 border-brand-red/40 bg-transparent hover:border-brand-red transition-all duration-300 card-hover rounded-lg"
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >

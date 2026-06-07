@@ -36,7 +36,7 @@ function AppContent() {
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, [isLoading]);
+  }, [isLoading, lang]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -57,9 +57,9 @@ function AppContent() {
       );
       elements.forEach((el) => observer.observe(el));
       return () => observer.disconnect();
-    }, 500);
+    }, 100);
     return () => clearTimeout(timer);
-  }, [isLoading]);
+  }, [isLoading, lang]);
 
   return (
     <div
