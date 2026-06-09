@@ -5,6 +5,7 @@ import {
   Sparkles,
   Target,
   BadgeDollarSign,
+  Star,
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -58,19 +59,28 @@ export default function AboutSection() {
                 className="w-full h-full object-cover opacity-60"
               />
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-brand-dark to-transparent">
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { v: '1+',    lKey: 'statYears'   },
-                    { v: '1500+', lKey: 'statMembers'  },
-                    { v: '4.9',   lKey: 'statRating'   },
-                  ].map((s) => (
-                    <div key={s.lKey} className="text-center">
-                      <div className="title-gotham text-brand-red text-2xl">{s.v}</div>
-                      <div className="title-gotham text-gray-400 text-xs uppercase tracking-wider">{t('about', s.lKey)}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+  <div className="grid grid-cols-3 gap-4">
+    {[
+      { v: '1+', lKey: 'statYears' },
+      { v: '1500+', lKey: 'statMembers' },
+      { v: '4.9', lKey: 'statRating', rating: true },
+    ].map((s) => (
+      <div key={s.lKey} className="text-center">
+        <div className="title-gotham text-brand-red text-2xl flex items-center justify-center gap-1">
+          {s.v}
+
+          {s.rating && (
+            <Star size={22} fill="currentColor" strokeWidth={0} className="text-yellow-400" />
+          )}
+        </div>
+
+        <div className="title-gotham text-gray-400 text-xs uppercase tracking-wider">
+          {t('about', s.lKey)}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
             </div>
             <div className="absolute -top-4 ltr:-right-4 rtl:-left-4 w-24 h-24 border-t-2 ltr:border-r-2 rtl:border-l-2 border-brand-red ltr:rounded-tr-2xl rtl:rounded-tl-2xl" />
             <div className="absolute -bottom-4 ltr:-left-4 rtl:-right-4 w-24 h-24 border-b-2 ltr:border-l-2 rtl:border-r-2 border-brand-red ltr:rounded-bl-2xl rtl:rounded-br-2xl" />

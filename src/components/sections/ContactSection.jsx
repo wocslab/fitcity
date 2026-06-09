@@ -5,7 +5,8 @@ import { useLanguage } from "../../context/LanguageContext";
 export default function ContactSection() {
   const [form, setForm] = useState({ firstName: "", email: "", phone: "", message: "" });
   const [status, setStatus] = useState("idle");
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,8 +45,8 @@ export default function ContactSection() {
     }
   };
 
-  const inputClass =
-    "w-full bg-[#222222] text-white text-sm placeholder-gray-500 px-4 py-3 focus:outline-none focus:bg-[#2a2a2a] transition-all duration-200 border-0 rounded-lg";
+const inputClass =
+  "w-full bg-[#222222] text-white text-sm placeholder-gray-500 px-4 py-3 focus:outline-none focus:bg-[#2a2a2a] transition-all duration-200 border-0 rounded-lg text-right";
 
   const contactItems = [
     { Icon: Phone,  label: "+971 501 69 59 89",  href: "tel:+971501695989" },
@@ -103,6 +104,7 @@ export default function ContactSection() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[8px]">
                 <input
                   type="text"
+                  dir="rtl"
                   placeholder={t('contact', 'namePlaceholder')}
                   value={form.firstName}
                   onChange={(e) => setForm({ ...form, firstName: e.target.value })}
@@ -111,6 +113,7 @@ export default function ContactSection() {
                 />
                 <input
                   type="email"
+                  dir="rtl"
                   placeholder={t('contact', 'emailPlaceholder')}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -120,6 +123,7 @@ export default function ContactSection() {
               </div>
               <input
                 type="tel"
+                dir="rtl"
                 placeholder={t('contact', 'phonePlaceholder')}
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -127,6 +131,7 @@ export default function ContactSection() {
                 className={inputClass}
               />
               <textarea
+                dir="rtl"
                 placeholder={t('contact', 'messagePlaceholder')}
                 rows={4}
                 value={form.message}
