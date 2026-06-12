@@ -34,12 +34,10 @@ export default function HeroSection({ isLoading = false }) {
       {/* Background */}
       <div className="absolute inset-0 z-0">
 <img
-  src="/bg.png"
+  src={lang === "ar" ? "/bg2.jpeg" : "/bg.png"}
   alt="Gym Hero"
-  className={`hidden md:block w-full h-full object-cover animate-slowZoom ${
-    lang === "ar" ? "scale-x-[-1]" : ""
-  }`}
-/>        <img src="/bg-mobile.jpeg" alt="Gym Hero Mobile" className="block md:hidden w-full h-full object-cover object-center" />
+  className="hidden md:block w-full h-full object-cover animate-slowZoom"
+/>       <img src="/bg-mobile.jpeg" alt="Gym Hero Mobile" className="block md:hidden w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-black/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/10 to-red-900/20" />
       </div>
