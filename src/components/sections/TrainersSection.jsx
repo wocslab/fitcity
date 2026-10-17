@@ -5,6 +5,7 @@ const trainers = [
   { name: "Siddique", image: "/trainers/siddique.jpeg" },
   { name: "Akhil",    image: "/trainers/akhil.jpeg"    },
   { name: "Aswin",    image: "/trainers/aswin.jpeg"    },
+  { name: "Rambo",     image: "/trainers/rambo.png"     },
   { name: "Ammu",     image: "/trainers/ammu.jpeg"     },
 ];
 
